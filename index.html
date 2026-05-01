@@ -38,7 +38,10 @@ body {
 .nav-overlay {
     display: none;
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(0,0,0,0.5);
     z-index: 98;
 }
@@ -193,11 +196,12 @@ section { padding: 70px 40px; }
     font-size: 0.9rem;
     line-height: 1.7;
     max-width: 800px;
+    width: 100%;
 }
 
 /* ===== HOME ===== */
 #home {
-    height: 100vh;
+    min-height: 100vh;
     padding: 80px 60px;
     background-image: url(Image/2.jpg);
     background-size: cover;
@@ -206,11 +210,15 @@ section { padding: 70px 40px; }
     display: flex;
     align-items: center;
     position: relative;
+    overflow: hidden;
 }
 #home::before {
     content: '';
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(0,0,0,0.65);
 }
 #home .home-row {
@@ -314,6 +322,9 @@ section { padding: 70px 40px; }
     white-space: nowrap;
     z-index: 3;
     box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    max-width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 #about .about-col .img-col img {
     position: relative;
@@ -886,7 +897,7 @@ section { padding: 70px 40px; }
 #experience .exp-item:hover .exp-card {
     background: #fff;
     box-shadow: 0 10px 35px rgba(0,167,142,0.12);
-    transform: translateX(5px);
+    transform: translateX(4px);
 }
 #experience .exp-card .exp-header {
     display: flex;
@@ -1044,7 +1055,10 @@ a.icon-box-link {
 a.icon-box-link::after {
     content: '';
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(0,167,142,0.04);
     opacity: 0;
     transition: opacity 0.3s;
@@ -1184,6 +1198,280 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
 }
 #contact .contact-row .contact-right form button[type=submit] i { font-size: 20px; }
 
+/* ===== BEYOND WORK (EXTRAS) SECTION ===== */
+#extras { background-color: var(--bgColor); }
+
+.extras-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 40px;
+}
+
+/* ── Panel base ── */
+.extras-panel {
+    background: #fff;
+    border-radius: 18px;
+    padding: 30px 26px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+    border-top: 4px solid var(--themeColor);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.extras-panel::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: rgba(0,167,142,0.06);
+    pointer-events: none;
+    transition: transform 0.4s;
+}
+.extras-panel:hover::before { transform: scale(2.8); }
+.extras-panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 38px rgba(0,167,142,0.14);
+}
+
+/* colour accent per panel */
+.extras-panel.lang-panel   { border-top-color: #6366f1; }
+.extras-panel.lang-panel::before   { background: rgba(99,102,241,0.06); }
+.extras-panel.cert-panel   { border-top-color: #f59e0b; }
+.extras-panel.cert-panel::before   { background: rgba(245,158,11,0.06); }
+.extras-panel.hobby-panel  { border-top-color: var(--themeColor); }
+
+/* ── Panel header ── */
+.extras-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 22px;
+}
+.extras-panel-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.lang-panel   .extras-panel-icon { background: linear-gradient(135deg, #6366f1, #4338ca); }
+.cert-panel   .extras-panel-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.hobby-panel  .extras-panel-icon { background: linear-gradient(135deg, var(--themeColor), #007a6a); }
+
+.extras-panel-header h3 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--sideBGColor);
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+
+/* ── Language flags ── */
+.lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+.lang-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.lang-name {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sideBGColor);
+    min-width: 90px;
+    flex-shrink: 0;
+}
+.lang-flag {
+    font-size: 1.3rem;
+    line-height: 1;
+}
+.lang-bar-wrap {
+    flex: 1;
+    height: 6px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.lang-bar {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #6366f1, #a5b4fc);
+    transition: width 1s ease;
+}
+.lang-level {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #6366f1;
+    background: #eef2ff;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+/* ── Certifications ── */
+.cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.cert-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 13px 14px;
+    border-radius: 12px;
+    background: #fffbeb;
+    border: 1px solid rgba(245,158,11,0.2);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+.cert-item:hover { transform: translateX(4px); box-shadow: 0 4px 14px rgba(245,158,11,0.12); }
+.cert-dot {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+.cert-info {}
+.cert-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--sideBGColor);
+    line-height: 1.3;
+    margin-bottom: 3px;
+}
+.cert-issuer {
+    font-size: 0.73rem;
+    font-weight: 500;
+    color: #d97706;
+}
+
+/* Gov-exam card */
+.gov-card {
+    margin-top: 14px;
+    padding: 13px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #040b14 0%, #0d1b2a 100%);
+    border: 1px solid rgba(0,167,142,0.25);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+.gov-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--themeColor), #007a6a);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+.gov-text {}
+.gov-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+}
+.gov-desc {
+    font-size: 0.72rem;
+    color: #aaa;
+    line-height: 1.5;
+}
+
+/* ── Hobbies ── */
+.hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.hobby-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 14px 10px;
+    border-radius: 14px;
+    background: #f0faf8;
+    border: 1.5px solid rgba(0,167,142,0.15);
+    cursor: default;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+.hobby-item:hover {
+    background: var(--themeColor);
+    border-color: var(--themeColor);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,167,142,0.22);
+}
+.hobby-emoji {
+    font-size: 1.55rem;
+    line-height: 1;
+    transition: transform 0.25s;
+}
+.hobby-item:hover .hobby-emoji { transform: scale(1.15) rotate(-5deg); }
+.hobby-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--sideBGColor);
+    letter-spacing: 0.2px;
+    transition: color 0.25s;
+}
+.hobby-item:hover .hobby-label { color: #fff; }
+
+/* Responsive for extras */
+@media (max-width: 1050px) {
+    .extras-grid { grid-template-columns: repeat(2, 1fr); }
+    .extras-panel.cert-panel { grid-column: 1 / -1; }
+    .lang-item { flex-wrap: wrap; gap: 6px; }
+    .lang-bar-wrap { min-width: 60px; }
+}
+@media (max-width: 700px) {
+    .extras-grid { grid-template-columns: 1fr; gap: 18px; }
+    .extras-panel.cert-panel { grid-column: auto; }
+    .hobby-grid { grid-template-columns: repeat(3, 1fr); }
+    .lang-item { flex-wrap: nowrap; gap: 10px; }
+}
+@media (max-width: 480px) {
+    .hobby-grid { grid-template-columns: repeat(2, 1fr); }
+    .extras-panel { padding: 22px 18px; }
+    .lang-name { min-width: 80px; font-size: 0.8rem; }
+    .lang-level { font-size: 0.63rem; padding: 2px 7px; }
+}
+@media (max-width: 400px) {
+    .hobby-grid { grid-template-columns: repeat(2, 1fr); }
+    .extras-panel { padding: 18px 14px; }
+    .extras-panel-icon { width: 40px; height: 40px; font-size: 17px; }
+    .lang-name { min-width: 72px; font-size: 0.76rem; }
+    .lang-flag { font-size: 1.1rem; }
+    .cert-item { padding: 11px 12px; gap: 10px; }
+    .cert-name { font-size: 0.78rem; }
+    .cert-issuer { font-size: 0.7rem; }
+    .gov-card { padding: 11px 12px; gap: 10px; }
+    .gov-title { font-size: 0.76rem; }
+    .gov-desc { font-size: 0.69rem; }
+}
+
 /* ============================================================
    RESPONSIVE BREAKPOINTS
 ============================================================ */
@@ -1197,7 +1485,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
 
     section { padding: 60px 32px; }
 
-    #home { padding: 60px 32px; min-height: 100svh; height: auto; }
+    #home { padding: 60px 32px; min-height: 100vh; height: auto; }
 }
 
 /* --- Tablet (up to 900px) --- */
@@ -1225,7 +1513,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
     #contact .contact-row { flex-direction: column; }
 
     /* Home */
-    #home { padding: 55px 30px; min-height: 100svh; height: auto; }
+    #home { padding: 55px 30px; min-height: 100vh; height: auto; }
 }
 
 /* --- Large mobile (up to 768px) --- */
@@ -1235,7 +1523,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
     /* Home */
     #home {
         padding: 70px 22px 50px;
-        min-height: 100svh;
+        min-height: 100vh;
         height: auto;
         align-items: center;
     }
@@ -1284,7 +1572,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
     /* Home */
     #home {
         padding: 80px 18px 50px;
-        min-height: 100svh;
+        min-height: 100vh;
         height: auto;
         align-items: flex-start;
     }
@@ -1386,6 +1674,32 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
     #skill .skill-category { padding: 20px 16px; }
     #skill .skill-tag { font-size: 0.73rem; padding: 5px 10px; }
 }
+
+/* --- Touch / hover-none devices: disable slide transforms that cause overflow --- */
+@media (hover: none) {
+    #experience .exp-item:hover .exp-card { transform: none; }
+    a.icon-box-link.email-box:hover,
+    a.icon-box-link.phone-box:hover { transform: none; }
+    #about .role-chip:hover { transform: none; }
+    #skill .skill-category:hover { transform: none; }
+    #portfolio .proj-card:hover { transform: none; }
+    .edu-card:hover { transform: none; }
+    .extras-panel:hover { transform: none; }
+    .cert-item:hover { transform: none; }
+    .hobby-item:hover { transform: none; }
+}
+
+/* --- Landscape mobile: ensure home fits without overflow --- */
+@media (max-height: 500px) and (orientation: landscape) {
+    #home {
+        min-height: auto;
+        padding: 90px 32px 50px;
+        height: auto;
+        align-items: flex-start;
+    }
+    #home .home-row h1 { font-size: 1.6rem; margin-bottom: 8px; }
+    #home .home-row p { font-size: 0.95rem; }
+}
     </style>
 </head>
 <body>
@@ -1420,6 +1734,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
                 <li><a href="#about"><i class="fa-solid fa-user"></i> About Me</a></li>
                 <li><a href="#portfolio"><i class="fa-solid fa-briefcase"></i> Portfolio &amp; Projects</a></li>
                 <li><a href="#experience"><i class="fa-solid fa-briefcase"></i> My Experience</a></li>
+                <li><a href="#extras"><i class="fa-solid fa-star"></i> Beyond Work</a></li>
                 <li><a href="#contact"><i class="fa-solid fa-envelope"></i> Contact</a></li>
             </ul>
         </nav>
@@ -1572,7 +1887,7 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
                         <div class="edu-badge">🎓 Highest Achievement</div>
                         <h3 class="edu-degree">Bachelor of Engineering</h3>
                         <div class="edu-branch"><i class="fa-solid fa-microchip"></i> Information Technology</div>
-                        <div class="edu-school"><i class="fa-solid fa-building-columns"></i> Gyanmanjri Innovative University</div>
+                        <div class="edu-school"><i class="fa-solid fa-building-columns"></i> Gyanmanjri Istitute Of Technology</div>
                         <div class="edu-meta-row">
                             <span class="edu-year"><i class="fa-solid fa-calendar-days"></i> 2020 – 2024</span>
                             <span class="edu-score edu-score-gold"><i class="fa-solid fa-star"></i> CGPA: 8.33</span>
@@ -1865,6 +2180,107 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
                             <li>Developed foundational proficiency in core web technologies — HTML, CSS, and JavaScript — through hands-on project tasks under senior developer mentorship.</li>
                             <li>Prepared detailed work reports and technical documentation, establishing disciplined habits of structured reporting and professional written communication.</li>
                         </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- BEYOND WORK -->
+        <section id="extras">
+            <h1 class="sub-heading">Beyond Work</h1>
+            <div class="divider"></div>
+            <p class="sub-para">A peek into the languages I speak, the credentials I've earned, and the pursuits that keep me energised outside the office.</p>
+
+            <div class="extras-grid">
+
+                <!-- LANGUAGES -->
+                <div class="extras-panel lang-panel">
+                    <div class="extras-panel-header">
+                        <div class="extras-panel-icon"><i class="fa-solid fa-language"></i></div>
+                        <h3>Languages I Speak</h3>
+                    </div>
+                    <div class="lang-list">
+                        <div class="lang-item">
+                            <div class="lang-name"><span class="lang-flag">&#x1F1EC;&#x1F1E7;</span> English</div>
+                            <div class="lang-bar-wrap"><div class="lang-bar" style="width:85%;"></div></div>
+                            <span class="lang-level">Fluent</span>
+                        </div>
+                        <div class="lang-item">
+                            <div class="lang-name"><span class="lang-flag">&#x1F1EE;&#x1F1F3;</span> Gujarati</div>
+                            <div class="lang-bar-wrap"><div class="lang-bar" style="width:100%;"></div></div>
+                            <span class="lang-level">Native</span>
+                        </div>
+                        <div class="lang-item">
+                            <div class="lang-name"><span class="lang-flag">&#x1F1EE;&#x1F1F3;</span> Hindi</div>
+                            <div class="lang-bar-wrap"><div class="lang-bar" style="width:90%;"></div></div>
+                            <span class="lang-level">Fluent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOBBIES -->
+                <div class="extras-panel hobby-panel">
+                    <div class="extras-panel-header">
+                        <div class="extras-panel-icon"><i class="fa-solid fa-heart"></i></div>
+                        <h3>Hobbies &amp; Interests</h3>
+                    </div>
+                    <div class="hobby-grid">
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x1F3AC;</span>
+                            <span class="hobby-label">Binge Watching</span>
+                        </div>
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x1F3D0;</span>
+                            <span class="hobby-label">Volleyball</span>
+                        </div>
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x2708;&#xFE0F;</span>
+                            <span class="hobby-label">Travelling</span>
+                        </div>
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x1F3CF;</span>
+                            <span class="hobby-label">Cricket</span>
+                        </div>
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x1F3CA;</span>
+                            <span class="hobby-label">Swimming</span>
+                        </div>
+                        <div class="hobby-item">
+                            <span class="hobby-emoji">&#x1F45E;</span>
+                            <span class="hobby-label">Hiking &amp; Trekking</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CERTIFICATIONS + GOV EXAM -->
+                <div class="extras-panel cert-panel">
+                    <div class="extras-panel-header">
+                        <div class="extras-panel-icon"><i class="fa-solid fa-certificate"></i></div>
+                        <h3>Certifications &amp; Achievements</h3>
+                    </div>
+                    <div class="cert-list">
+                        <div class="cert-item">
+                            <div class="cert-dot"><i class="fa-solid fa-medal"></i></div>
+                            <div class="cert-info">
+                                <div class="cert-name">Introduction to Front-End Development</div>
+                                <div class="cert-issuer">&#x1F4D8; Issued by META (Coursera)</div>
+                            </div>
+                        </div>
+                        <div class="cert-item">
+                            <div class="cert-dot"><i class="fa-solid fa-trophy"></i></div>
+                            <div class="cert-info">
+                                <div class="cert-name">Hackathon Participant</div>
+                                <div class="cert-issuer">&#x26A1; Student Startup &amp; Innovation Policy (SSIP)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gov-card">
+                        <div class="gov-icon"><i class="fa-solid fa-landmark"></i></div>
+                        <div class="gov-text">
+                            <div class="gov-title">Government Exam Preparation</div>
+                            <div class="gov-desc">Actively preparing for competitive exams — sharpening analytical thinking, problem-solving ability, and the discipline of consistent daily effort.</div>
+                        </div>
                     </div>
                 </div>
 
