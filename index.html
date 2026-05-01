@@ -1194,66 +1194,197 @@ a.icon-box-link:hover .click-hint { opacity: 1; transform: translateX(0); }
     #MenuBtn { display: block; }
     .mobile-nav-active header { left: 0; }
     main { margin-left: 0; }
+
+    section { padding: 60px 32px; }
+
+    #home { padding: 60px 32px; min-height: 100svh; height: auto; }
 }
 
 /* --- Tablet (up to 900px) --- */
 @media (max-width: 900px) {
     section { padding: 55px 28px; }
 
-    #about .about-col { flex-direction: column; gap: 50px; }
-    #about .about-col .img-col { flex: none; width: 100%; max-width: 260px; margin: 0 auto; }
+    /* About */
+    #about .about-col { flex-direction: column; gap: 40px; }
+    #about .about-col .img-col { flex: none; width: 100%; max-width: 240px; margin: 0 auto; }
     #about .about-col .img-col img { width: 100%; }
     #about .about-stats { grid-template-columns: repeat(2, 1fr); }
 
+    /* Skills */
     #skill .skills-grid { grid-template-columns: 1fr; }
 
-    #experience .exp-card .exp-header { flex-direction: column; }
-    #experience .exp-card .exp-meta { align-items: flex-start; }
+    /* Experience */
+    #experience .exp-card .exp-header { flex-direction: column; gap: 8px; }
+    #experience .exp-card .exp-meta { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
 
+    /* Portfolio */
     #portfolio .proj-grid { grid-template-columns: 1fr; }
     #portfolio .worklist { grid-template-columns: repeat(2, 1fr); }
 
+    /* Contact */
     #contact .contact-row { flex-direction: column; }
 
-    #home { padding: 50px 30px; }
+    /* Home */
+    #home { padding: 55px 30px; min-height: 100svh; height: auto; }
+}
+
+/* --- Large mobile (up to 768px) --- */
+@media (max-width: 768px) {
+    section { padding: 50px 22px; }
+
+    /* Home */
+    #home {
+        padding: 70px 22px 50px;
+        min-height: 100svh;
+        height: auto;
+        align-items: center;
+    }
+    #home .home-row { max-width: 100%; width: 100%; }
+    #home .home-row h1 { font-size: clamp(1.7rem, 6vw, 2.6rem); }
+    #home .home-row p { font-size: clamp(0.95rem, 3vw, 1.3rem); }
+
+    /* About */
+    #about .about-col .img-col { max-width: 210px; }
+    #about .about-col .info-col h2 { font-size: clamp(1rem, 3vw, 1.3rem); }
+    #about .about-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    #about .stat-card { padding: 12px 10px; }
+    #about .stat-card .stat-num { font-size: 1.2rem; }
+
+    /* Skills */
+    #skill .skills-grid { grid-template-columns: 1fr; gap: 18px; }
+
+    /* Education */
+    .edu-card { padding: 20px 16px; gap: 14px; }
+    .edu-icon-wrap { width: 46px; height: 46px; font-size: 19px; }
+    .edu-degree { font-size: 1rem; }
+
+    /* Portfolio */
+    #portfolio .proj-grid { grid-template-columns: 1fr; gap: 20px; }
+
+    /* Experience */
+    #experience .exp-timeline { padding-left: 32px; }
+    #experience .exp-dot { left: -38px; width: 24px; height: 24px; }
+    #experience .exp-card { padding: 18px 16px; }
+    #experience .exp-card .exp-role { font-size: 0.95rem; }
+
+    /* Contact */
+    #contact .contact-row { flex-direction: column; gap: 20px; }
+    #contact .contact-row .contact-left,
+    #contact .contact-row .contact-right { padding: 22px; }
+    a.icon-box-link { flex-wrap: wrap; }
+    .click-hint { display: none; }
 }
 
 /* --- Large mobile (up to 600px) --- */
 @media (max-width: 600px) {
-    section { padding: 45px 18px; }
-    .sub-heading { font-size: 1.5rem; }
+    section { padding: 45px 16px; }
+    .sub-heading { font-size: 1.45rem; }
+    .divider { margin-bottom: 12px; }
 
-    #home { padding: 40px 20px; padding-top: 80px; align-items: flex-start; }
-    #home .home-row h1 { font-size: 1.9rem; line-height: 1.25; }
+    /* Home */
+    #home {
+        padding: 80px 18px 50px;
+        min-height: 100svh;
+        height: auto;
+        align-items: flex-start;
+    }
+    #home .home-row h1 { font-size: 1.8rem; line-height: 1.25; }
     #home .home-row p { font-size: 1rem; }
 
-    #about .about-col .img-col { max-width: 200px; }
-    #about .about-col .info-col h2 { font-size: 1.1rem; }
-    #about .about-stats { grid-template-columns: repeat(2, 1fr); }
+    /* About */
+    #about .about-col { gap: 35px; }
+    #about .about-col .img-col { max-width: 190px; }
+    #about .about-col .info-col h2 { font-size: 1.05rem; }
+    #about .about-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    #about .role-chips { gap: 6px; }
+    #about .role-chip { font-size: 0.7rem; padding: 4px 10px; }
 
+    /* Education */
+    .edu-card { padding: 18px 14px; gap: 12px; flex-wrap: nowrap; }
+    .edu-icon-wrap { width: 42px; height: 42px; font-size: 17px; flex-shrink: 0; }
+    .edu-degree { font-size: 0.95rem; }
+    .edu-meta-row { gap: 6px; }
+
+    /* Portfolio */
+    #portfolio .proj-grid { grid-template-columns: 1fr; gap: 18px; }
     #portfolio .worklist { grid-template-columns: 1fr; }
     #portfolio .work img { height: 200px; }
+    #portfolio .proj-head { padding: 18px 16px 14px; }
+    #portfolio .proj-body { padding: 14px 16px 18px; }
+    #portfolio .proj-title { font-size: 0.95rem; }
 
+    /* Experience */
+    #experience .exp-timeline { padding-left: 28px; }
+    #experience .exp-dot { left: -34px; width: 22px; height: 22px; top: 14px; }
+    #experience .exp-dot i { font-size: 8px; }
+    #experience .exp-card { padding: 14px 14px; }
+    #experience .exp-card .exp-role { font-size: 0.92rem; }
+    #experience .exp-card .exp-company { font-size: 0.78rem; }
+    #experience .exp-card .exp-meta { flex-direction: column; gap: 4px; }
+    #experience .exp-card .exp-points li { font-size: 0.8rem; }
+
+    /* Contact */
+    #contact .contact-row .contact-left,
+    #contact .contact-row .contact-right { padding: 18px 16px; }
     #contact .contact-row .contact-left .map iframe { height: 180px; }
+    .icon-box-static { padding: 10px 12px; }
+    a.icon-box-link { padding: 10px 12px; gap: 12px; }
+    .click-hint { display: none; }
+}
 
-    .edu-card { padding: 20px 18px; gap: 16px; }
-    .edu-icon-wrap { width: 44px; height: 44px; font-size: 18px; }
+/* --- Small mobile (up to 480px) --- */
+@media (max-width: 480px) {
+    section { padding: 42px 14px; }
+    .sub-heading { font-size: 1.35rem; }
+
+    #home { padding: 75px 16px 45px; }
+    #home .home-row h1 { font-size: 1.65rem; }
+    #home .home-row p { font-size: 0.95rem; }
+
+    #about .about-stats { grid-template-columns: repeat(2, 1fr); }
+    #about .stat-card .stat-num { font-size: 1.1rem; }
+    #about .stat-card .stat-label { font-size: 0.6rem; }
+    #about .about-bio { font-size: 0.82rem; }
+
+    .edu-card { gap: 10px; }
+    .edu-icon-wrap { width: 38px; height: 38px; border-radius: 10px; font-size: 15px; }
+
+    #experience .exp-card .exp-date,
+    #experience .exp-card .exp-location { font-size: 0.7rem; white-space: normal; }
 }
 
 /* --- Small mobile (up to 400px) --- */
 @media (max-width: 400px) {
-    section { padding: 40px 14px; }
-    .sub-heading { font-size: 1.3rem; }
-    #home .home-row h1 { font-size: 1.55rem; }
-    #home .home-row p { font-size: 0.9rem; }
+    section { padding: 38px 12px; }
+    .sub-heading { font-size: 1.25rem; }
+
+    #home { padding: 72px 14px 40px; }
+    #home .home-row h1 { font-size: 1.5rem; }
+    #home .home-row p { font-size: 0.88rem; }
+
     header .profile img { width: 100px; height: 100px; }
     header .profile h1 { font-size: 1rem; }
-    #about .about-col .img-col { max-width: 180px; }
+
+    #about .about-col .img-col { max-width: 165px; }
+    #about .about-col .info-col h2 { font-size: 0.95rem; }
+    #about .about-stats { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    #about .stat-card { padding: 10px 8px; }
+    #about .role-chip { font-size: 0.66rem; padding: 3px 8px; gap: 4px; }
+
+    .edu-degree { font-size: 0.88rem; }
+    .edu-branch, .edu-school { font-size: 0.76rem; }
+
+    #experience .exp-timeline { padding-left: 24px; }
+    #experience .exp-dot { left: -30px; width: 20px; height: 20px; }
+    #experience .exp-card { padding: 12px 12px; }
+    #experience .exp-card .exp-points li { font-size: 0.77rem; gap: 7px; }
+
     #contact .contact-row .contact-left,
-    #contact .contact-row .contact-right { padding: 18px 14px; }
-    #experience .exp-timeline { padding-left: 28px; }
-    #experience .exp-dot { left: -34px; width: 22px; height: 22px; }
-    #experience .exp-card { padding: 16px; }
+    #contact .contact-row .contact-right { padding: 16px 12px; }
+    #contact .contact-row .contact-left .map iframe { height: 160px; }
+
+    #skill .skill-category { padding: 20px 16px; }
+    #skill .skill-tag { font-size: 0.73rem; padding: 5px 10px; }
 }
     </style>
 </head>
