@@ -53,28 +53,114 @@ body{font-family:var(--font-body);background:var(--cream);color:var(--text-dark)
 /* NAVBAR */
 #navbar{position:fixed;top:30px;left:0;right:0;z-index:850;transition:all 0.35s var(--ease);}
 #navbar.scrolled{background:rgba(4,11,19,0.96);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 1px 0 rgba(200,146,42,0.1),0 8px 40px rgba(0,0,0,0.5);}
-.nav-wrap{max-width:1320px;margin:0 auto;padding:1rem 2rem;display:flex;align-items:center;gap:2rem;}
-.nav-logo{text-decoration:none;display:flex;align-items:center;gap:0.85rem;flex-shrink:0;}
-.logo-emblem{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--amber),var(--amber-light));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--ink-deep);box-shadow:0 4px 16px rgba(200,146,42,0.35);}
-.logo-name{display:flex;flex-direction:column;}
-.logo-primary{color:#fff;font-family:var(--font-ui);font-size:0.95rem;font-weight:700;letter-spacing:0.06em;}
-.logo-tagline{color:var(--amber-light);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;}
+
+/* nav-wrap: logo LEFT | links CENTRE | actions RIGHT | hamburger far-right */
+.nav-wrap{
+  max-width:1320px;margin:0 auto;
+  padding:1rem 2rem;
+  display:flex;align-items:center;
+  /* logo takes its natural size; links/actions fill middle; hamburger at end */
+}
+.nav-logo{
+  text-decoration:none;display:flex;align-items:center;gap:0.75rem;
+  flex:0 0 auto; /* never shrink, never grow */
+  min-width:0;
+}
+.logo-emblem{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--amber),var(--amber-light));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--ink-deep);box-shadow:0 4px 16px rgba(200,146,42,0.35);flex-shrink:0;}
+.logo-name{display:flex;flex-direction:column;min-width:0;}
+.logo-primary{color:#fff;font-family:var(--font-ui);font-size:0.95rem;font-weight:700;letter-spacing:0.06em;white-space:nowrap;}
+.logo-tagline{color:var(--amber-light);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;white-space:nowrap;}
+
+/* links take remaining space, pushed after logo */
 .nav-links{display:flex;list-style:none;margin-left:auto;gap:0.1rem;}
 .nav-links a{color:rgba(255,255,255,0.65);text-decoration:none;padding:0.5rem 0.9rem;border-radius:8px;font-family:var(--font-ui);font-size:0.82rem;font-weight:500;letter-spacing:0.03em;transition:all 0.2s;white-space:nowrap;}
 .nav-links a:hover{color:var(--amber-light);background:rgba(200,146,42,0.1);}
-.nav-actions{display:flex;gap:0.65rem;align-items:center;}
+.nav-actions{display:flex;gap:0.65rem;align-items:center;margin-left:1.5rem;flex-shrink:0;}
 .btn-ghost{background:transparent;border:1.5px solid var(--amber);color:var(--amber);padding:0.5rem 1.3rem;border-radius:8px;cursor:pointer;font-family:var(--font-ui);font-size:0.82rem;font-weight:600;transition:all 0.2s;white-space:nowrap;}
 .btn-ghost:hover{background:rgba(200,146,42,0.12);}
 .btn-cta{background:var(--amber);color:var(--ink-deep);border:none;padding:0.5rem 1.4rem;border-radius:8px;cursor:pointer;font-family:var(--font-ui);font-size:0.82rem;font-weight:700;transition:all 0.2s;white-space:nowrap;box-shadow:0 4px 20px rgba(200,146,42,0.3);}
 .btn-cta:hover{background:var(--amber-light);transform:translateY(-1px);}
-.hamburger{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;}
-#mobile-menu{display:none;position:fixed;inset:0;background:var(--ink-deep);z-index:9800;padding:5rem 2rem 2rem;flex-direction:column;}
+
+/* Hamburger — hidden on desktop, always pushed to far right on mobile */
+.hamburger{
+  display:none;
+  background:rgba(255,255,255,0.06);
+  border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:8px;
+  color:#fff;
+  font-size:1.35rem;
+  line-height:1;
+  cursor:pointer;
+  width:42px;height:42px;
+  align-items:center;justify-content:center;
+  flex-shrink:0;
+  margin-left:auto;
+  transition:background 0.2s,border-color 0.2s;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.hamburger:hover{background:rgba(200,146,42,0.15);border-color:rgba(200,146,42,0.4);}
+.hamburger:active{background:rgba(200,146,42,0.2);}
+
+/* FULL-SCREEN MOBILE MENU */
+#mobile-menu{
+  display:none;position:fixed;inset:0;
+  background:var(--ink-deep);z-index:9800;
+  flex-direction:column;overflow-y:auto;
+}
 #mobile-menu.open{display:flex;}
-.close-menu{position:absolute;top:5.5rem;right:2rem;background:none;border:none;color:var(--amber);font-size:1.5rem;cursor:pointer;}
-#mobile-menu ul{list-style:none;}
-#mobile-menu li{border-bottom:1px solid rgba(255,255,255,0.06);}
-#mobile-menu a{display:block;padding:1rem 0;color:rgba(255,255,255,0.85);text-decoration:none;font-family:var(--font-ui);font-size:1.1rem;font-weight:500;}
-.mob-actions{display:flex;flex-direction:column;gap:0.75rem;margin-top:2rem;}
+
+/* Menu top bar — logo + close button */
+.mobile-menu-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.25rem 1.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  flex-shrink:0;
+}
+.mobile-menu-logo{display:flex;align-items:center;gap:0.75rem;text-decoration:none;}
+.close-menu{
+  background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.12);
+  border-radius:8px;color:#fff;font-size:1.2rem;cursor:pointer;
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all 0.2s;
+}
+.close-menu:hover{background:rgba(200,146,42,0.15);border-color:rgba(200,146,42,0.4);color:var(--amber);}
+
+/* Nav items */
+.mobile-menu-nav{flex:1;padding:0.5rem 0;}
+#mobile-menu ul{list-style:none;padding:0 1.5rem;}
+#mobile-menu li{border-bottom:1px solid rgba(255,255,255,0.05);}
+#mobile-menu a{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 0;color:rgba(255,255,255,0.8);
+  text-decoration:none;font-family:var(--font-ui);font-size:1rem;font-weight:600;
+  transition:color 0.2s;
+}
+#mobile-menu a:hover{color:var(--amber);}
+#mobile-menu a::after{content:'›';font-size:1.2rem;opacity:0.3;}
+
+/* CTA buttons at bottom */
+.mob-actions{
+  padding:1.25rem 1.5rem;
+  display:flex;flex-direction:column;gap:0.75rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+  flex-shrink:0;
+}
+.mob-actions .btn-hero-primary{width:100%;text-align:center;padding:1rem;font-size:1rem;}
+.mob-actions .btn-hero-outline{width:100%;justify-content:center;padding:0.9rem;font-size:0.95rem;border-color:rgba(255,255,255,0.2);}
+
+/* Contact strip inside mobile menu */
+.mob-contact-strip{
+  display:flex;gap:0.75rem;padding:0 1.5rem 1.25rem;
+  flex-shrink:0;
+}
+.mob-contact-btn{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:0.4rem;
+  padding:0.6rem 0.5rem;border-radius:10px;text-decoration:none;
+  font-family:var(--font-ui);font-size:0.78rem;font-weight:700;
+}
+.mob-contact-btn.wa{background:rgba(37,211,102,0.12);color:#4ade80;border:1px solid rgba(37,211,102,0.25);}
+.mob-contact-btn.call{background:rgba(200,146,42,0.12);color:var(--amber);border:1px solid rgba(200,146,42,0.25);}
 
 /* HERO */
 .hero{min-height:100vh;background:var(--ink-deep);position:relative;overflow:hidden;display:flex;align-items:center;padding-top:120px;}
@@ -569,7 +655,7 @@ img{max-width:100%;height:auto;}
   .section{padding:5rem 0;}
   /* NAV — switch to hamburger */
   .nav-links,.nav-actions{display:none;}
-  .hamburger{display:block;}
+  .hamburger{display:flex;}
   /* HERO */
   .hero-stat-cluster{grid-template-columns:repeat(2,1fr);}
   .h-stat-num{font-size:1.75rem;}
@@ -609,7 +695,7 @@ img{max-width:100%;height:auto;}
   .logo-primary{font-size:0.85rem;}
   .logo-tagline{font-size:0.55rem;}
   .logo-emblem{width:38px;height:38px;font-size:0.9rem;}
-  .hamburger{display:block;}
+  .hamburger{display:flex;}
   .nav-links,.nav-actions{display:none;}
 
   /* HERO */
@@ -1027,26 +1113,41 @@ img{max-width:100%;height:auto;}
       <button class="btn-ghost" onclick="openModal('enquiry')">Free Consultation</button>
       <button class="btn-cta" onclick="openModal('visit')">Book Site Visit</button>
     </div>
-    <button class="hamburger" onclick="document.getElementById('mobile-menu').classList.toggle('open')">☰</button>
+    <button class="hamburger" id="hamburger-btn" aria-label="Open menu" onclick="document.getElementById('mobile-menu').classList.add('open')"><svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="0" width="20" height="2" rx="1" fill="currentColor"/><rect y="7" width="20" height="2" rx="1" fill="currentColor"/><rect y="14" width="20" height="2" rx="1" fill="currentColor"/></svg></button>
   </div>
 </nav>
 
 <!-- MOBILE MENU -->
 <div id="mobile-menu">
-  <button class="close-menu" onclick="document.getElementById('mobile-menu').classList.remove('open')">✕</button>
-  <ul>
-    <li><a href="#about" onclick="document.getElementById('mobile-menu').classList.remove('open')">About Dholera</a></li>
-    <li><a href="#why-invest" onclick="document.getElementById('mobile-menu').classList.remove('open')">Why Invest</a></li>
-    <li><a href="#projects" onclick="document.getElementById('mobile-menu').classList.remove('open')">Projects</a></li>
-    <li><a href="#infrastructure" onclick="document.getElementById('mobile-menu').classList.remove('open')">Infrastructure</a></li>
-    <li><a href="#roi" onclick="document.getElementById('mobile-menu').classList.remove('open')">ROI Calculator</a></li>
-    <li><a href="#testimonials" onclick="document.getElementById('mobile-menu').classList.remove('open')">Testimonials</a></li>
-    <li><a href="#blog" onclick="document.getElementById('mobile-menu').classList.remove('open')">Insights</a></li>
-    <li><a href="#contact" onclick="document.getElementById('mobile-menu').classList.remove('open')">Contact</a></li>
-  </ul>
+  <div class="mobile-menu-header">
+    <a class="mobile-menu-logo" href="#home" onclick="closeMobileMenu()">
+      <div class="logo-emblem" style="width:36px;height:36px;font-size:0.9rem;">DIX</div>
+      <div class="logo-name">
+        <span class="logo-primary" style="font-size:0.88rem;">DholeraInvestX</span>
+        <span class="logo-tagline">India's #1 Smart City</span>
+      </div>
+    </a>
+    <button class="close-menu" onclick="closeMobileMenu()">✕</button>
+  </div>
+  <div class="mobile-menu-nav">
+    <ul>
+      <li><a href="#about" onclick="closeMobileMenu()">About Dholera</a></li>
+      <li><a href="#why-invest" onclick="closeMobileMenu()">Why Invest</a></li>
+      <li><a href="#projects" onclick="closeMobileMenu()">Projects</a></li>
+      <li><a href="#infrastructure" onclick="closeMobileMenu()">Infrastructure</a></li>
+      <li><a href="#roi" onclick="closeMobileMenu()">ROI Calculator</a></li>
+      <li><a href="#testimonials" onclick="closeMobileMenu()">Testimonials</a></li>
+      <li><a href="#blog" onclick="closeMobileMenu()">Insights</a></li>
+      <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+    </ul>
+  </div>
+  <div class="mob-contact-strip">
+    <a href="https://wa.me/919033502038" target="_blank" class="mob-contact-btn wa">💬 WhatsApp</a>
+    <a href="tel:+919033502038" class="mob-contact-btn call">📞 Call Us</a>
+  </div>
   <div class="mob-actions">
-    <button class="btn-hero-primary" onclick="openModal('enquiry');document.getElementById('mobile-menu').classList.remove('open')">Free Consultation</button>
-    <button class="btn-hero-outline" onclick="openModal('visit');document.getElementById('mobile-menu').classList.remove('open')">Book Site Visit</button>
+    <button class="btn-hero-primary" onclick="openModal('enquiry');closeMobileMenu()">🚀 Free Consultation</button>
+    <button class="btn-hero-outline" onclick="openModal('visit');closeMobileMenu()">📅 Book Site Visit</button>
   </div>
 </div>
 
@@ -1805,6 +1906,24 @@ img{max-width:100%;height:auto;}
 <div id="toast"></div>
 
 <script>
+// MOBILE MENU
+function closeMobileMenu(){
+  document.getElementById('mobile-menu').classList.remove('open');
+  document.body.style.overflow='';
+}
+function openMobileMenu(){
+  document.getElementById('mobile-menu').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+document.getElementById('hamburger-btn').addEventListener('click',function(){
+  const menu=document.getElementById('mobile-menu');
+  if(menu.classList.contains('open')){closeMobileMenu();}else{openMobileMenu();}
+});
+// Close on overlay-click (outside menu content)
+document.getElementById('mobile-menu').addEventListener('click',function(e){
+  if(e.target===this)closeMobileMenu();
+});
+
 // PRELOADER
 window.addEventListener('load',()=>{setTimeout(()=>document.getElementById('preloader').classList.add('out'),2400);});
 
