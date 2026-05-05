@@ -539,8 +539,8 @@ footer{background:var(--ink-deep);padding:5rem 0 0;border-top:1px solid rgba(200
 #chat-window{
   position:fixed;
   bottom:6.5rem;right:2rem;
-  width:380px;
-  max-height:calc(100vh - 10rem);
+  width:390px;
+  max-height:calc(100vh - 8rem);
   border-radius:20px;
   background:var(--ink-deep);
   border:1px solid rgba(200,146,42,0.3);
@@ -583,8 +583,8 @@ footer{background:var(--ink-deep);padding:5rem 0 0;border-top:1px solid rgba(200
 /* MESSAGES AREA */
 #chat-messages{
   flex:1;
-  min-height:200px;
-  max-height:340px;
+  min-height:160px;
+  max-height:260px;
   overflow-y:auto;
   padding:1.25rem;
   display:flex;flex-direction:column;gap:0.85rem;
@@ -614,11 +614,13 @@ footer{background:var(--ink-deep);padding:5rem 0 0;border-top:1px solid rgba(200
 }
 
 /* TYPING INDICATOR */
-.typing-dots{display:flex;gap:4px;align-items:center;padding:0.4rem 0.2rem;}
+.typing-wrap{display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.2rem;}
+.typing-dots{display:flex;gap:4px;align-items:center;flex-shrink:0;}
 .typing-dot{width:7px;height:7px;background:rgba(255,255,255,0.35);border-radius:50%;animation:bounce 1.3s ease infinite;}
 .typing-dot:nth-child(2){animation-delay:0.2s;}
 .typing-dot:nth-child(3){animation-delay:0.4s;}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.typing-label{font-size:0.75rem;color:rgba(255,255,255,0.45);font-style:italic;}
 
 /* QUICK OPTIONS */
 .chat-quick-opts{
@@ -665,6 +667,42 @@ footer{background:var(--ink-deep);padding:5rem 0 0;border-top:1px solid rgba(200
   display:flex;align-items:center;justify-content:center;
 }
 #chat-send:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(200,146,42,0.4);}
+
+/* CHAT OPTIONS AREA (guided flow) */
+.chat-options-area {
+  display:flex;flex-direction:column;gap:0.42rem;
+  padding:0.6rem 1rem 0.5rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+  max-height:230px;overflow-y:auto;
+  flex-shrink:0;
+  scroll-behavior:smooth;
+}
+.chat-options-area::-webkit-scrollbar{width:3px;}
+.chat-options-area::-webkit-scrollbar-thumb{background:rgba(200,146,42,0.25);border-radius:3px;}
+
+.dix-opt-btn {
+  display:block;width:100%;text-align:left;
+  background:rgba(200,146,42,0.08);
+  border:1px solid rgba(200,146,42,0.2);
+  color:rgba(255,255,255,0.85);
+  padding:0.55rem 0.9rem;
+  border-radius:10px;
+  font-size:0.8rem;
+  font-family:var(--font-body);
+  cursor:pointer;
+  transition:all 0.18s;
+  line-height:1.35;
+}
+.dix-opt-btn:hover {
+  background:rgba(200,146,42,0.2);
+  border-color:rgba(200,146,42,0.45);
+  color:#fff;
+  transform:translateX(3px);
+}
+.dix-opt-btn:active {
+  transform:translateX(1px);
+  background:rgba(200,146,42,0.28);
+}
 
 /* WA FLOAT */
 #wa-float{
@@ -2081,22 +2119,22 @@ img{max-width:100%;height:auto;}
     <div class="chat-header-left">
       <div class="chat-avatar">🤖</div>
       <div class="chat-header-info">
-        <div class="chat-header-name">DIX Investment Assistant</div>
-        <div class="chat-header-status"><span style="width:6px;height:6px;background:#25d366;border-radius:50%;display:inline-block;flex-shrink:0"></span> Online · Replies instantly</div>
+        <div class="chat-header-name">DIX — Dholera AI Assistant</div>
+        <div class="chat-header-status">
+          <span style="width:6px;height:6px;background:#25d366;border-radius:50%;display:inline-block;flex-shrink:0;animation:blink 2s ease infinite"></span>
+          Online · Ask about plots, prices & projects
+        </div>
       </div>
     </div>
-    <button class="chat-close" onclick="toggleChat()">✕</button>
+    <div style="display:flex;align-items:center;gap:0.4rem;">
+      <button class="chat-close" onclick="resetChat()" title="New conversation" style="font-size:0.85rem;opacity:0.6;">↺</button>
+      <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
   </div>
   <div id="chat-messages"></div>
-  <div class="chat-quick-opts" id="quickOpts">
-    <button class="qopt" onclick="sendQuickMsg('What is current land price?')">💰 Land prices?</button>
-    <button class="qopt" onclick="sendQuickMsg('How to book a site visit?')">🗺️ Site visit</button>
-    <button class="qopt" onclick="sendQuickMsg('Is this investment safe?')">🛡️ Is it safe?</button>
-    <button class="qopt" onclick="sendQuickMsg('Can NRIs invest?')">🌍 NRI?</button>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" id="chat-input" placeholder="Ask anything about Dholera..." onkeydown="if(event.key==='Enter')sendChat()">
-    <button id="chat-send" onclick="sendChat()">➤</button>
+  <div class="chat-options-area" id="chatOptionsArea"></div>
+  <div style="text-align:center;padding:0.4rem 1rem 0.65rem;font-size:0.65rem;color:rgba(255,255,255,0.22);flex-shrink:0;border-top:1px solid rgba(255,255,255,0.05);background:rgba(255,255,255,0.01);">
+    👆 Tap an option above to continue · DholeraInvestX Guide
   </div>
 </div>
 
@@ -2475,59 +2513,520 @@ function showToast(msg){
   const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// AI CHAT
-let chatOpen=false,chatInit=false;
-function toggleChat(){
-  chatOpen=!chatOpen;
-  document.getElementById('chat-window').classList.toggle('open',chatOpen);
-  document.getElementById('chat-backdrop').classList.toggle('open',chatOpen);
-  // Lock body scroll on mobile when chat open
-  if(window.innerWidth <= 768){
+// ═══════════════════════════════════════════════════════════════
+// DIX GUIDED CHATBOT — Decision-Tree Flow (No API · No Rate Limits)
+// Pure predefined Q&A with deep Dholera knowledge
+// ═══════════════════════════════════════════════════════════════
+
+let chatOpen = false, chatInit = false;
+
+// ── FLOW DEFINITION ────────────────────────────────────────────
+const FLOW = {
+
+  welcome: {
+    msg: `👋 **Namaste!** I'm DIX — your DholeraInvestX Guide.\n\n🏙️ I can answer everything about Dholera SIR — prices, projects, legal safety, returns, and how to invest.\n\nWhat would you like to know today?`,
+    opts: [
+      { label: '💰 Land Prices & Zones', next: 'prices_menu' },
+      { label: '📈 Returns & ROI', next: 'roi_menu' },
+      { label: '🏭 Projects & Infrastructure', next: 'projects_menu' },
+      { label: '⚖️ Legal Safety Guide', next: 'legal_menu' },
+      { label: '🗺️ Book a Site Visit', next: 'visit_menu' },
+      { label: '🌍 NRI Investment', next: 'nri_menu' },
+    ]
+  },
+
+  // ── PRICES ──────────────────────────────────────────────────
+  prices_menu: {
+    msg: `💰 **Dholera SIR — Land Prices (May 2026)**\n\nDholera is divided into 6 Town Planning (TP) zones. Each has a different price and investment profile.\n\nWhich zone are you interested in?`,
+    opts: [
+      { label: '🏙️ TP-1 Prime Residential', next: 'price_tp1' },
+      { label: '🏭 TP-2 Industrial / Tata SEZ', next: 'price_tp2' },
+      { label: '🏘️ TP-3 Outer Residential', next: 'price_tp3' },
+      { label: '🏪 Commercial Plots', next: 'price_commercial' },
+      { label: '📐 Minimum Plot Sizes', next: 'price_sizes' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  price_tp1: {
+    msg: `🏙️ **TP-1 — Prime Residential (Activation Zone)**\n\n📍 Location: City Centre & Activation Zone — highest demand area\n💰 Price: **₹9,000 – ₹12,000 / sq yd**\n📐 Min. Plot: 100 sq yd (₹9 lakh onwards)\n\n📈 Price Journey:\n• 2019: ₹2,100/sq yd\n• 2021: ₹4,200/sq yd\n• 2023: ₹6,800/sq yd\n• 2026: ₹9,500+ /sq yd\n✨ **4.5X return in 7 years**\n\n✅ NA converted · RERA registered · 7-point title-clear\n💳 30% down + 12/24/36 month EMI`,
+    opts: [
+      { label: '📈 Expected returns by 2030?', next: 'roi_tp1' },
+      { label: '⚖️ Is it legally safe?', next: 'legal_docs' },
+      { label: '📞 Talk to Our Expert', next: 'contact' },
+      { label: '⬅️ All Prices', next: 'prices_menu' },
+    ]
+  },
+
+  price_tp2: {
+    msg: `🏭 **TP-2 — Industrial Zone (Tata SEZ Belt)**\n\n📍 Location: Core industrial & semiconductor manufacturing belt\n💰 Price: **₹6,500 – ₹8,500 / sq yd**\n📐 Min. Plot: 500 sq yd (industrial), 100 sq yd (residential near belt)\n🏗️ Pre-built industrial sheds: ₹45–65 lakh/unit\n\n🔥 **Why TP-2 is HOT right now:**\n• Tata Semiconductor SEZ gazette-notified (April 9, 2026)\n• ₹91,000 Cr Tata + PSMC chip factory being built here\n• 21,000 direct jobs → massive worker housing demand\n• Prices expected to 2–3X once production starts (Q4 2027)`,
+    opts: [
+      { label: '🏭 Tell me more about Tata SEZ', next: 'project_tata' },
+      { label: '📈 ROI on TP-2 plots?', next: 'roi_tp2' },
+      { label: '📞 Talk to Our Expert', next: 'contact' },
+      { label: '⬅️ All Prices', next: 'prices_menu' },
+    ]
+  },
+
+  price_tp3: {
+    msg: `🏘️ **TP-3 — Outer Residential Zone**\n\n📍 Location: Mid-ring residential expansion area\n💰 Price: **₹5,000 – ₹7,000 / sq yd**\n📐 Min. Plot: 100 sq yd (₹5 lakh onwards)\n\n💡 **Best for:**\n• First-time investors with ₹5–15 lakh budget\n• 5–7 year investment horizon\n• Maximum land at lowest price per sq yd\n\n🎯 Analyst Target by 2030: ₹12,000–15,000/sq yd\n✨ Potential 2–3X in 4 years (base case)`,
+    opts: [
+      { label: '📈 TP-3 return projections', next: 'roi_tp3' },
+      { label: '⚖️ Legal documents needed', next: 'legal_docs' },
+      { label: '📞 Talk to Our Expert', next: 'contact' },
+      { label: '⬅️ All Prices', next: 'prices_menu' },
+    ]
+  },
+
+  price_commercial: {
+    msg: `🏪 **Commercial Plots — TP-1 Frontage**\n\n📍 Location: Main Boulevard & City Centre frontage\n💰 Price: **₹14,000 – ₹18,000 / sq yd**\n📐 Min. Plot: 200 sq yd\n\n💡 **Best for:**\n• Retail showrooms, offices, hotels\n• Commercial leasing post-2028\n• Highest rental yield: 5–8% p.a. expected\n\n🏆 Limited inventory — only ~80 commercial plots remaining in prime location\n\nWant to check current availability?`,
+    opts: [
+      { label: '📞 Check Availability Now', next: 'contact' },
+      { label: '📈 Commercial rental yield?', next: 'roi_commercial' },
+      { label: '⬅️ All Prices', next: 'prices_menu' },
+    ]
+  },
+
+  price_sizes: {
+    msg: `📐 **Minimum Plot Sizes — Dholera SIR**\n\n🏘️ Residential: **100 sq yd** minimum\n🏭 Industrial: **500 sq yd** minimum\n🏪 Commercial: **200 sq yd** minimum\n\n💰 **Entry Price Guide:**\n• TP-3 Residential 100 sq yd → from **₹5 lakh**\n• TP-1 Residential 100 sq yd → from **₹9 lakh**\n• TP-2 Industrial 500 sq yd → from **₹32.5 lakh**\n• Commercial 200 sq yd → from **₹28 lakh**\n\n💳 **Payment Plan:** 30% booking + 12/24/36 EMI\n✅ NRI wire transfer accepted (NRE/NRO accounts)`,
+    opts: [
+      { label: '📞 Get personalised recommendation', next: 'contact' },
+      { label: '⬅️ All Prices', next: 'prices_menu' },
+      { label: '🏠 Main Menu', next: 'welcome' },
+    ]
+  },
+
+  // ── ROI ─────────────────────────────────────────────────────
+  roi_menu: {
+    msg: `📈 **Returns & ROI — Dholera SIR**\n\nWhat would you like to know about investment returns?`,
+    opts: [
+      { label: '📊 Historical price growth', next: 'roi_history' },
+      { label: '🔮 Projected returns by 2030', next: 'roi_projections' },
+      { label: '💰 Returns on ₹10L / ₹25L / ₹50L', next: 'roi_calculator' },
+      { label: '📉 Compare vs FD, Gold, Nifty', next: 'roi_compare' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  roi_history: {
+    msg: `📊 **Dholera Land Price History**\n\n**TP-1 Prime Residential:**\n• 2019: ₹2,100 / sq yd\n• 2020: ₹2,800 / sq yd\n• 2021: ₹4,200 / sq yd\n• 2022: ₹5,200 / sq yd\n• 2023: ₹6,800 / sq yd\n• 2024: ₹8,000 / sq yd\n• 2026: ₹9,500+ / sq yd\n\n🏆 **Total: 4.5X in 7 years (2019→2026)**\n\n📌 Catalysts that drove growth:\n✅ DMIC trunk infrastructure activated\n✅ Expressway construction (2022)\n✅ Airport Phase 1 complete (2025)\n✅ Tata Semiconductor SEZ notified (April 2026)`,
+    opts: [
+      { label: '🔮 What about next 4 years?', next: 'roi_projections' },
+      { label: '📉 Compare vs other investments', next: 'roi_compare' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  roi_projections: {
+    msg: `🔮 **Dholera — Analyst Projections by 2030**\n\n**TP-1 Prime Residential:**\n• Conservative: ₹18,000/sq yd (1.9X from today)\n• Base case: ₹22,000/sq yd (2.3X from today)\n• Optimistic: ₹28,000/sq yd (3X from today)\n\n**TP-2 Industrial Zone:**\n• Base case: ₹15,000–21,000/sq yd (2–2.5X)\n\n**TP-3 Outer Residential:**\n• Base case: ₹12,000–15,000/sq yd (2–2.5X)\n\n🔑 **Key drivers for 2026–2030:**\n• Tata chip factory production (Q4 2027)\n• Airport Phase 2 international terminal\n• Expressway opening (Q3 2026)\n• Metro rail groundwork\n• Population influx → housing demand spike`,
+    opts: [
+      { label: '💰 Calculate my returns', next: 'roi_calculator' },
+      { label: '📞 Get Expert Analysis', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  roi_calculator: {
+    msg: `💰 **Sample Return Calculations (Base Case)**\n\n**₹10 Lakh invested in TP-1 today:**\n→ Buy ~111 sq yd at ₹9,000/sq yd\n→ 2030 value: ~₹24.4 lakh\n→ **Profit: +₹14.4 lakh (2.4X in 4 years)**\n\n**₹25 Lakh invested in TP-1 today:**\n→ Buy ~277 sq yd at ₹9,000/sq yd\n→ 2030 value: ~₹61 lakh\n→ **Profit: +₹36 lakh (2.4X)**\n\n**₹50 Lakh invested in TP-2 today:**\n→ Buy ~666 sq yd at ₹7,500/sq yd\n→ 2030 value: ~₹1.2 crore\n→ **Profit: +₹70 lakh (2.4X)**\n\n⚠️ Past data-based projections. Not guaranteed.`,
+    opts: [
+      { label: '🔮 What drives these returns?', next: 'roi_projections' },
+      { label: '📉 Compare vs FD & Gold', next: 'roi_compare' },
+      { label: '📞 Get Personalised Advice', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  roi_compare: {
+    msg: `📉 **Dholera vs Other Investments (7-Year)**\n\n| Investment | ₹5L in 2019 → 2026 |\n|---|---|\n| 🏦 Fixed Deposit (7%) | **₹7.6 lakh (+52%)** |\n| 🥇 Gold | **₹12 lakh (+140%)** |\n| 📈 Nifty 50 | **₹10.5 lakh (+110%)** |\n| 🏙️ Dholera TP-1 | **₹22.5 lakh (+350%)** |\n\n🏆 **Dholera outperformed all by 2–6X**\n\nVs other cities at current prices:\n• Mumbai Panvel: ₹85,000/sq yd\n• Bengaluru Devanahalli: ₹55,000/sq yd\n• Dholera TP-1: ₹9,500/sq yd ← Most upside per ₹`,
+    opts: [
+      { label: '💰 What can I buy with my budget?', next: 'roi_calculator' },
+      { label: '📞 Talk to Investment Expert', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  roi_tp1: {
+    msg: `📈 **TP-1 Return Projections (Base Case)**\n\n• Today: ₹9,500/sq yd\n• 2027: ₹13,000/sq yd (+37%)\n• 2028: ₹16,000/sq yd (+68%)\n• 2030: ₹22,000/sq yd (+131%)\n\n**100 sq yd plot bought today at ₹9.5 lakh:**\n→ 2030 value: ~₹22 lakh\n→ Net gain: +₹12.5 lakh in 4 years\n\n✅ Rental yield post-2028: 3–5% p.a.\n✅ LTCG tax (>24 months): 12.5% with indexation`,
+    opts: [
+      { label: '📞 Book a Consultation', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+      { label: '🏠 Main Menu', next: 'welcome' },
+    ]
+  },
+
+  roi_tp2: {
+    msg: `📈 **TP-2 Industrial — Return Potential**\n\n**The Tata Effect:**\nHistorically, major anchor factories drive 2–4X land appreciation within 5 km. Tata's chip fab is in TP-2.\n\n• Today: ₹7,000/sq yd (avg)\n• 2027 (production starts): ~₹12,000/sq yd\n• 2030: ₹15,000–21,000/sq yd\n→ **2–3X in 4 years (potential)**\n\n**Residential plots near TP-2 (worker housing demand):**\nExpected 3–4X as 21,000+ workers need housing in adjacent residential zones`,
+    opts: [
+      { label: '🏭 More about Tata SEZ', next: 'project_tata' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  roi_tp3: {
+    msg: `📈 **TP-3 Outer Residential — Return Projections**\n\n• Today: ₹5,500/sq yd (avg)\n• 2028: ~₹9,000/sq yd\n• 2030: ₹12,000–15,000/sq yd\n→ **2–2.5X in 4 years**\n\n💡 **Best entry point** for investors with ₹5–15 lakh budget\n📐 Buy 100–200 sq yd for maximum volume appreciation\n\n⏰ Window: Pre-expressway opening (Q3 2026) prices will jump once road opens`,
+    opts: [
+      { label: '📞 Lock in current price now', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+      { label: '🏠 Main Menu', next: 'welcome' },
+    ]
+  },
+
+  roi_commercial: {
+    msg: `📈 **Commercial Plot Returns**\n\n• Today: ₹14,000–18,000/sq yd\n• 2030 projection: ₹28,000–35,000/sq yd\n→ ~2X capital appreciation\n\n🏪 **Rental Income (post-2028):**\n• Retail/showroom: ₹60–120/sq yd/month\n• Office space: ₹40–80/sq yd/month\n→ Yield: 5–8% p.a. on today's cost\n\n🏆 Total return (capital + rent): potentially 3X over 5 years`,
+    opts: [
+      { label: '📞 Check Commercial Availability', next: 'contact' },
+      { label: '⬅️ ROI Menu', next: 'roi_menu' },
+    ]
+  },
+
+  // ── PROJECTS ────────────────────────────────────────────────
+  projects_menu: {
+    msg: `🏭 **Dholera SIR — Projects & Infrastructure**\n\nWhat would you like to know about?`,
+    opts: [
+      { label: '🔬 Tata Semiconductor SEZ', next: 'project_tata' },
+      { label: '✈️ Dholera International Airport', next: 'project_airport' },
+      { label: '🛣️ Ahmedabad–Dholera Expressway', next: 'project_expressway' },
+      { label: '⚡ Smart City Infrastructure', next: 'project_infra' },
+      { label: '☀️ 1,200 MW Solar Park', next: 'project_solar' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  project_tata: {
+    msg: `🔬 **Tata Semiconductor SEZ — Dholera**\n\n📅 Gazette notified: **April 9, 2026** (official)\n📍 Location: TP-2 Industrial Zone, Dholera SIR\n💰 Investment: **₹91,000 Crore (~$11 Billion)**\n🤝 Partners: Tata Electronics + PSMC (Taiwan)\n\n🏭 **Key Facts:**\n• 66 hectares SEZ\n• Technology: 28nm chips (70% of global chip demand)\n• Capacity: 50,000 wafers/month\n• Phase 1 production: **Q4 2027**\n• Direct jobs: **21,000+**\n• Indirect jobs: 1 lakh+ in ecosystem\n\n🌍 Government: 50% capex subsidy from India Semiconductor Mission = ₹45,500 Cr backing`,
+    opts: [
+      { label: '📈 How does this affect prices?', next: 'roi_tp2' },
+      { label: '✈️ What about the airport?', next: 'project_airport' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Projects Menu', next: 'projects_menu' },
+    ]
+  },
+
+  project_airport: {
+    msg: `✈️ **Dholera International Airport**\n\n📊 Status: **Phase 1 — OPERATIONAL** ✅\n📍 Location: Inside Dholera SIR boundary\n\n🛫 **Phase 1 (Live):**\n• Domestic routes + chartered flights\n• Dedicated cargo handling\n• Runway + terminal operational\n\n🔨 **Phase 2 (by 2029):**\n• International terminal\n• 2nd runway\n• 10 million passengers/year capacity\n• Dedicated cargo bays for semiconductors & pharma exports\n\n💡 **Investment Logic:**\nPlots near Bengaluru airport (2004) → 8–12X in 15 years. Dholera plots are literally airport-adjacent today at just ₹9,500/sq yd.`,
+    opts: [
+      { label: '🛣️ Expressway update?', next: 'project_expressway' },
+      { label: '📈 ROI impact of airport?', next: 'roi_projections' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Projects Menu', next: 'projects_menu' },
+    ]
+  },
+
+  project_expressway: {
+    msg: `🛣️ **Ahmedabad–Dholera Expressway**\n\n📊 Status: **98% complete — opens Q3 2026** 🚧\n📏 Length: 109 km (6-lane expressway)\n⏱️ Travel time: Ahmedabad → Dholera in **~45 minutes**\n\n🚦 **Current situation:**\nAccessible from Ahmedabad in ~75 min via existing highway. Post-expressway opening, travel time drops by 40%, accelerating residential and commercial demand.\n\n📈 **Price impact expected:** 15–25% bump in TP-1 & TP-3 prices once expressway opens — similar to what happened to Jewar area near Noida airport expressway.\n\n⏰ **Best time to buy: before Q3 2026 expressway opening**`,
+    opts: [
+      { label: '⚡ Infrastructure ready now?', next: 'project_infra' },
+      { label: '🗺️ Book a site visit', next: 'visit_menu' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Projects Menu', next: 'projects_menu' },
+    ]
+  },
+
+  project_infra: {
+    msg: `⚡ **Smart City Infrastructure — What's LIVE Now**\n\n✅ **Already Operational:**\n• 24×7 underground power grid (Activation Zone)\n• Narmada Canal water pipeline\n• High-speed fibre-optic network\n• Solar-powered smart street lighting\n• ABCD Building (city government HQ)\n• 1,200 MW Solar Park\n\n🚧 **In Progress:**\n• Metro Rail: Ahmedabad–Dholera 63 km (approved)\n• Expressway: 98% complete (Q3 2026)\n\n📅 **Planned:**\n• Medical City & hospitals\n• IIT + university campus\n• Population target: 2 million by 2040\n\n🌐 DICDL (50:50 GoI + Gujarat Govt) manages all development`,
+    opts: [
+      { label: '☀️ Tell me about Solar Park', next: 'project_solar' },
+      { label: '🗺️ See it in person (Site Visit)', next: 'visit_menu' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Projects Menu', next: 'projects_menu' },
+    ]
+  },
+
+  project_solar: {
+    msg: `☀️ **Dholera 1,200 MW Solar Park**\n\n📊 Status: **Operational** ✅\n⚡ Capacity: 1,200 MW (5 GW target by 2030)\n\n💡 **For Industrial Investors:**\n• Solar power supplied at **₹2.10/unit**\n• vs ₹6.50–8.00/unit grid tariff\n• Saves ₹200–400 Cr/year for large factories\n• Makes Dholera cheapest industrial power in India\n\n🏘️ **For Residential Buyers:**\n• Smart metering → 60–70% lower electricity bills\n• Compared to Ahmedabad city rates\n\n🏆 India's largest solar park is a permanent cost-competitiveness advantage for Dholera industries`,
+    opts: [
+      { label: '🏭 Back to Projects', next: 'projects_menu' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '🏠 Main Menu', next: 'welcome' },
+    ]
+  },
+
+  // ── LEGAL ────────────────────────────────────────────────────
+  legal_menu: {
+    msg: `⚖️ **Legal Safety — Dholera SIR**\n\nWhat would you like to know about legal safety?`,
+    opts: [
+      { label: '📄 Documents to verify', next: 'legal_docs' },
+      { label: '🚨 How to avoid scams', next: 'legal_scams' },
+      { label: '🏛️ What governs Dholera SIR?', next: 'legal_framework' },
+      { label: '💰 Stamp duty & registration', next: 'legal_stamp' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  legal_docs: {
+    msg: `📄 **DholeraInvestX 7-Point Title Verification**\n\nEvery plot we recommend passes all 7 checks:\n\n1️⃣ **7/12 Utara Extract** — Survey record confirming ownership\n2️⃣ **NA Conversion Order** — Confirms non-agricultural land status\n3️⃣ **Mutation Entry / Hak Patrak** — Full ownership chain\n4️⃣ **Encumbrance Certificate** — 30 years clear (no mortgage/dispute)\n5️⃣ **GIDB Approved TP Scheme** — Zone compliance confirmed\n6️⃣ **NOC Chain** — Collector → GIDB → Municipality\n7️⃣ **Registered Sale Deed + Court Search** — District & High Court\n\n✅ All our plots are RERA registered\n✅ Complete document copies provided before booking`,
+    opts: [
+      { label: '🚨 How to spot fake plots?', next: 'legal_scams' },
+      { label: '💰 What are the taxes?', next: 'legal_stamp' },
+      { label: '📞 Talk to Our Legal Expert', next: 'contact' },
+      { label: '⬅️ Legal Menu', next: 'legal_menu' },
+    ]
+  },
+
+  legal_scams: {
+    msg: `🚨 **How to Spot Dholera Land Scams**\n\n**Red Flags to watch for:**\n\n❌ Plot is outside SIR boundary (check official GIDB map)\n❌ Agricultural land sold as "NA approved" — verify the NA order\n❌ No 7/12 Utara extract provided\n❌ No RERA registration number\n❌ Pressure for cash payment without registered deed\n❌ "Discount" for quick cash booking\n❌ No proper NOC chain documentation\n\n✅ **How DholeraInvestX protects you:**\n• All 7 documents provided BEFORE booking\n• NA order and GIDB approval physically verified\n• Registered sale deed through Sub-Registrar, Dholera\n• We have ZERO agricultural-to-residential conversion fraud cases in 8+ years`,
+    opts: [
+      { label: '📄 What docs should I check?', next: 'legal_docs' },
+      { label: '📞 Verify a plot with our expert', next: 'contact' },
+      { label: '⬅️ Legal Menu', next: 'legal_menu' },
+    ]
+  },
+
+  legal_framework: {
+    msg: `🏛️ **Legal Framework Governing Dholera SIR**\n\n📜 **Primary Law:** Gujarat Special Investment Region (SIR) Act, 2009\n🏢 **Regulator:** GIDB (Gujarat Infrastructure Development Board)\n🏛️ **Development SPV:** DICDL (50:50 Govt of India + Gujarat Govt)\n\n**What this means for investors:**\n✅ Ring-fenced legal zone — no arbitrary rezoning\n✅ Disputes handled by dedicated GIDB tribunal\n✅ Both Central & State governments have direct financial stake\n✅ Political continuity — survived 3 election cycles unchanged\n✅ All transactions under Registered Sale Deed (legally binding)\n\n🔐 **RERA:** All DholeraInvestX projects are registered under Gujarat RERA`,
+    opts: [
+      { label: '📄 What documents do I need?', next: 'legal_docs' },
+      { label: '💰 What are the taxes & fees?', next: 'legal_stamp' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Legal Menu', next: 'legal_menu' },
+    ]
+  },
+
+  legal_stamp: {
+    msg: `💰 **Stamp Duty & Registration — Dholera SIR**\n\n**Stamp Duty:**\n• Individual buyers: **4.9%** of deal value\n• Company buyers: **5.9%** of deal value\n\n**Registration Fee:** 1% of deal value\n\n**Total Transaction Cost Example:**\n• Plot value: ₹25 lakh\n• Stamp duty (4.9%): ₹1.225 lakh\n• Registration (1%): ₹25,000\n• **Total extra cost: ~₹1.47 lakh**\n\n**Tax on Gains (when you sell):**\n• Held >24 months (LTCG): **12.5%** with indexation benefit\n• NRIs: DTAA benefits apply (UAE, USA, UK, Canada, Singapore)\n\n✅ DholeraInvestX assists with complete registration process`,
+    opts: [
+      { label: '🌍 NRI tax benefits (DTAA)?', next: 'nri_tax' },
+      { label: '📞 Talk to Expert', next: 'contact' },
+      { label: '⬅️ Legal Menu', next: 'legal_menu' },
+    ]
+  },
+
+  // ── VISIT ────────────────────────────────────────────────────
+  visit_menu: {
+    msg: `🗺️ **Dholera SIR — Site Visit**\n\nSee the live infrastructure yourself! What would you like to know?`,
+    opts: [
+      { label: '🎫 Visit details & cost', next: 'visit_details' },
+      { label: '📅 Schedule & timing', next: 'visit_schedule' },
+      { label: '🚗 What is included?', next: 'visit_includes' },
+      { label: '✅ Book my visit now', next: 'visit_book' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  visit_details: {
+    msg: `🎫 **Site Visit Details**\n\n💰 **Fee: ₹12,500 per person**\n✅ **Fully refundable** against your plot booking\n(If you book a plot, ₹12,500 is deducted from booking amount)\n\n🌍 **NRI Option:**\n• Video call virtual tour available\n• e-Signing for documentation\n• Wire transfer accepted (NRE/NRO)\n• No need to travel to India\n\n📞 Contact: **+91 90335 02038** (WhatsApp)\n✉️ invest@dholeraInvestX.com`,
+    opts: [
+      { label: '📅 When can I visit?', next: 'visit_schedule' },
+      { label: '🚗 What is included?', next: 'visit_includes' },
+      { label: '✅ Book my visit now', next: 'visit_book' },
+      { label: '⬅️ Visit Menu', next: 'visit_menu' },
+    ]
+  },
+
+  visit_schedule: {
+    msg: `📅 **Site Visit Schedule**\n\n🗓️ **Regular visits:**\n• Every **Saturday**\n• 2nd & 4th **Sunday** of each month\n\n⏰ **Timing:** Depart Ahmedabad 8:00 AM → Return ~6:00 PM\n\n📍 **Meeting point:** Ahmedabad city (pickup arranged)\n\n📋 **Advance booking required:** Minimum 3 days before visit\n\n🌍 **For NRIs:**\nVirtual video tour can be arranged any weekday — just WhatsApp us to schedule`,
+    opts: [
+      { label: '🚗 What is included?', next: 'visit_includes' },
+      { label: '✅ Book my visit now', next: 'visit_book' },
+      { label: '⬅️ Visit Menu', next: 'visit_menu' },
+    ]
+  },
+
+  visit_includes: {
+    msg: `🚗 **What's Included in the Site Visit**\n\n✅ AC transport (Ahmedabad pickup & drop)\n✅ Expert guide — 8+ years Dholera experience\n✅ Drone video view of your plot\n✅ Live infrastructure tour (Activation Zone)\n✅ Meeting with GIDB-authorised representative\n✅ Lunch included\n✅ Complete document review on-site\n✅ Plot brochure & zone map\n\n🕐 **Full day:** 8:00 AM departure → 6:00 PM return\n\n💰 ₹12,500 — **100% refundable on plot booking**`,
+    opts: [
+      { label: '✅ Book my visit now', next: 'visit_book' },
+      { label: '📞 WhatsApp us to confirm', next: 'contact' },
+      { label: '⬅️ Visit Menu', next: 'visit_menu' },
+    ]
+  },
+
+  visit_book: {
+    msg: `✅ **Ready to Book Your Site Visit?**\n\n📋 Fill in the quick form to confirm your spot.\n\nOur team will confirm within 2 hours and send you all details via WhatsApp.\n\nClick below to open the booking form 👇`,
+    opts: [
+      { label: '📋 Open Booking Form', action: 'openVisitModal' },
+      { label: '📱 WhatsApp Instead', action: 'openWhatsApp' },
+      { label: '⬅️ Visit Menu', next: 'visit_menu' },
+    ]
+  },
+
+  // ── NRI ─────────────────────────────────────────────────────
+  nri_menu: {
+    msg: `🌍 **NRI Investment in Dholera SIR**\n\nWelcome! Many of our clients are NRIs from UAE, USA, UK, Canada, Singapore, and Australia. What would you like to know?`,
+    opts: [
+      { label: '📜 FEMA rules for NRIs', next: 'nri_fema' },
+      { label: '💳 Payment methods (NRE/NRO)', next: 'nri_payment' },
+      { label: '📺 Remote / Video tour option', next: 'nri_remote' },
+      { label: '💰 Tax benefits (DTAA)', next: 'nri_tax' },
+      { label: '⬅️ Main Menu', next: 'welcome' },
+    ]
+  },
+
+  nri_fema: {
+    msg: `📜 **FEMA Rules — NRI Buying Dholera Land**\n\n✅ **NRIs CAN buy Dholera SIR plots** because:\n• All plots have **NA (Non-Agricultural) conversion**\n• FEMA allows NRIs to buy NA/residential land in India\n• Agricultural land is NOT allowed — but Dholera is NA ✅\n\n📋 **Documents needed from NRI:**\n• Passport copy\n• OCI/PIO card (if applicable)\n• PAN card (or Form 60)\n• NRE/NRO/FCNR bank account details\n• Power of Attorney (if not travelling to India)\n\n✅ DholeraInvestX prepares complete POA documentation for NRIs worldwide`,
+    opts: [
+      { label: '💳 How do I pay from abroad?', next: 'nri_payment' },
+      { label: '📺 Can I buy remotely?', next: 'nri_remote' },
+      { label: '📞 Talk to NRI Expert', next: 'contact' },
+      { label: '⬅️ NRI Menu', next: 'nri_menu' },
+    ]
+  },
+
+  nri_payment: {
+    msg: `💳 **NRI Payment Methods**\n\n✅ **Accepted accounts for land purchase:**\n• **NRE Account** — Best option: full repatriation of principal + gains\n• **NRO Account** — Repatriation up to $1M/year\n• **FCNR Account** — Foreign currency deposits accepted\n\n🌍 **International wire transfer accepted**\n• USD, EUR, AED, GBP, CAD, SGD, AUD\n• Swift/TT transfer to our escrow account\n\n💳 **Payment Plan:**\n• 30% booking amount (wire transfer)\n• Balance: 12/24/36 month instalments\n\n⚡ **Pro Tip:** Use NRE account → 100% tax-free repatriation on sale proceeds`,
+    opts: [
+      { label: '📺 Can I buy without visiting?', next: 'nri_remote' },
+      { label: '💰 Tax benefits?', next: 'nri_tax' },
+      { label: '📞 Talk to NRI Expert', next: 'contact' },
+      { label: '⬅️ NRI Menu', next: 'nri_menu' },
+    ]
+  },
+
+  nri_remote: {
+    msg: `📺 **Remote / Virtual Investment (No India Trip Needed)**\n\n✅ **Complete process done remotely:**\n\n1️⃣ **Virtual site tour** — HD video call + drone footage of your plot\n2️⃣ **Document review** — All 7 title documents emailed to you\n3️⃣ **Legal review** — Our lawyer answers your questions on call\n4️⃣ **e-Signing** — Power of Attorney signed at Indian Embassy/Consulate in your city\n5️⃣ **Wire transfer** — Booking amount sent via international wire\n6️⃣ **Registration** — Our team handles everything in Dholera\n7️⃣ **Original deed** — Couriered to your international address\n\n🌍 We have clients in UAE, USA, UK, Canada, Singapore, Australia, New Zealand`,
+    opts: [
+      { label: '📞 Start my remote process', next: 'contact' },
+      { label: '💰 Tax benefits?', next: 'nri_tax' },
+      { label: '⬅️ NRI Menu', next: 'nri_menu' },
+    ]
+  },
+
+  nri_tax: {
+    msg: `💰 **NRI Tax Benefits — Dholera Investment**\n\n🏛️ **DTAA (Double Taxation Avoidance Agreement):**\n• UAE NRIs: **Zero capital gains tax** on Indian investments (DTAA)\n• USA, UK, Canada, Singapore NRIs: Reduced tax rate under DTAA\n\n📊 **Indian Tax on Sale:**\n• Held >24 months (LTCG): **12.5%** with indexation\n• No TDS for NRE account investments on repatriation\n\n🏦 **NRE Account Advantage:**\n• Interest income: Tax-free in India\n• Repatriation: Full principal + gains repatriated freely\n\n✅ DholeraInvestX works with CA firms specialising in NRI real estate tax — free tax consultation provided`,
+    opts: [
+      { label: '📞 Get free NRI consultation', next: 'contact' },
+      { label: '💳 Payment methods?', next: 'nri_payment' },
+      { label: '⬅️ NRI Menu', next: 'nri_menu' },
+    ]
+  },
+
+  // ── CONTACT (terminal node) ──────────────────────────────────
+  contact: {
+    msg: `📞 **Talk to Our Dholera Expert**\n\n🕐 **Response time: within 1 hour**\n\n📱 **WhatsApp:** +91 90335 02038\n✉️ **Email:** invest@dholeraInvestX.com\n\n🏢 **About DholeraInvestX:**\n✅ 8+ years exclusively in Dholera advisory (since 2017)\n✅ 400+ plots sold successfully\n✅ 150+ NRI clients across 15 countries\n✅ Zero legal disputes in our portfolio\n\nChoose how you'd like to connect:`,
+    opts: [
+      { label: '📋 Get Free Consultation', action: 'openEnquiryModal' },
+      { label: '🗺️ Book Site Visit', action: 'openVisitModal' },
+      { label: '📱 WhatsApp Now', action: 'openWhatsApp' },
+      { label: '🏠 Back to Main Menu', next: 'welcome' },
+    ]
+  }
+
+};
+
+// ── CHAT STATE ──────────────────────────────────────────────────
+function toggleChat() {
+  chatOpen = !chatOpen;
+  const win = document.getElementById('chat-window');
+  const backdrop = document.getElementById('chat-backdrop');
+  win.classList.toggle('open', chatOpen);
+  backdrop.classList.toggle('open', chatOpen);
+  if (window.innerWidth <= 768) {
     document.body.style.overflow = chatOpen ? 'hidden' : '';
   }
-  if(chatOpen&&!chatInit){
-    chatInit=true;
-    appendMsg('Hello! 👋 I\'m your Dholera Investment Assistant. Ask me about plots, prices, legal documents, ROI, site visits, and anything about Dholera SIR!','bot');
+  if (chatOpen && !chatInit) {
+    chatInit = true;
+    setTimeout(() => goTo('welcome'), 300);
   }
 }
-function appendMsg(text,sender){
-  const msgs=document.getElementById('chat-messages');
-  const d=document.createElement('div');d.className='msg '+sender;
-  d.innerHTML=`<div class="msg-bubble">${text.replace(/\n/g,'<br>')}</div>`;
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+
+function resetChat() {
+  chatInit = false;
+  document.getElementById('chat-messages').innerHTML = '';
+  document.getElementById('chatOptionsArea').innerHTML = '';
+  goTo('welcome');
 }
-function appendTyping(){
-  const msgs=document.getElementById('chat-messages');
-  const d=document.createElement('div');d.className='msg bot';d.id='typing-indicator';
-  d.innerHTML=`<div class="msg-bubble"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
-  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d;
+
+// ── CORE ENGINE ─────────────────────────────────────────────────
+function goTo(nodeId) {
+  const node = FLOW[nodeId];
+  if (!node) return;
+
+  // Clear previous options
+  const optArea = document.getElementById('chatOptionsArea');
+  optArea.innerHTML = '';
+
+  // Show typing indicator
+  const msgs = document.getElementById('chat-messages');
+  const typingEl = document.createElement('div');
+  typingEl.className = 'msg bot';
+  typingEl.innerHTML = `<div class="msg-bubble typing-wrap"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div><span class="typing-label">DIX is typing…</span></div>`;
+  msgs.appendChild(typingEl);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(() => {
+    typingEl.remove();
+    // Add bot message
+    const d = document.createElement('div');
+    d.className = 'msg bot';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = formatDIX(node.msg);
+    d.appendChild(bubble);
+    msgs.appendChild(d);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    // Render option buttons
+    renderOptions(node.opts);
+  }, 600);
 }
-function sendQuickMsg(msg){document.getElementById('chat-input').value=msg;sendChat();}
-async function sendChat(){
-  const inp=document.getElementById('chat-input');
-  const msg=inp.value.trim();if(!msg)return;
-  inp.value='';
-  document.getElementById('quickOpts').style.display='none';
-  appendMsg(msg,'user');
-  const typing=appendTyping();
-  const sys=`You are a helpful, friendly investment advisor for DholeraInvestX, specialising in Dholera SIR land investment in Gujarat, India. Key facts:
-- Current land prices: ₹6,500–12,000 per sq yd depending on zone
-- Residential plots: ₹8,000/sq yd in TP-1, ₹6,500 in TP-2/3
-- Tata Semiconductor SEZ notified April 9, 2026: ₹91,000 Cr, 66 ha, 21,000 jobs
-- Airport: Phase 1 operational. Expressway: 109 km, 98% complete, 45 min from Ahmedabad
-- Land returns: ₹2,000 (2019) → ₹8,000+ (2024) = 4X in 5 years
-- Legal: NA, NOC, title clear, registered sale deed
-- Site visit: ₹12,500 (refundable on booking)
-- Contact: +91 90335 02038, invest@dholeraInvestX.com
-- NRI investment: allowed under FEMA via NRE/NRO accounts
-Keep responses concise (under 180 words), helpful, use emojis and line breaks.`;
-  try{
-    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:sys,messages:[{role:'user',content:msg}]})});
-    const data=await r.json();typing.remove();
-    appendMsg(data.content?.[0]?.text||chatFallback(),'bot');
-  }catch(e){typing.remove();appendMsg(chatFallback(),'bot');}
+
+function userTap(label, next, action) {
+  // Show user bubble
+  const msgs = document.getElementById('chat-messages');
+  const d = document.createElement('div');
+  d.className = 'msg user';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.textContent = label;
+  d.appendChild(bubble);
+  msgs.appendChild(d);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Clear options immediately
+  document.getElementById('chatOptionsArea').innerHTML = '';
+
+  if (action) {
+    handleAction(action);
+    // After action, re-show contact options
+    setTimeout(() => {
+      goTo('contact');
+    }, 800);
+    return;
+  }
+  if (next) {
+    setTimeout(() => goTo(next), 400);
+  }
 }
-function chatFallback(){return 'For personalised information please contact our team directly:\n\n📱 WhatsApp: +91 90335 02038\n✉️ invest@dholeraInvestX.com\n\nWe respond within 1 hour! 🚀';}
+
+function handleAction(action) {
+  if (action === 'openEnquiryModal') {
+    openModal('enquiry');
+  } else if (action === 'openVisitModal') {
+    openModal('visit');
+  } else if (action === 'openWhatsApp') {
+    window.open('https://wa.me/919033502038?text=Hello%20DholeraInvestX!%20I%27m%20interested%20in%20Dholera%20SIR%20investment.%20Please%20guide%20me.', '_blank');
+  }
+}
+
+function renderOptions(opts) {
+  const area = document.getElementById('chatOptionsArea');
+  area.innerHTML = '';
+  if (!opts || !opts.length) return;
+
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'dix-opt-btn';
+    btn.textContent = opt.label;
+    btn.addEventListener('click', function() {
+      userTap(opt.label, opt.next || null, opt.action || null);
+    });
+    area.appendChild(btn);
+  });
+  area.scrollTop = 0;
+
+  // Scroll messages area to show options
+  const msgs = document.getElementById('chat-messages');
+  setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 50);
+}
+
+function formatDIX(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+}
 
 // SCROLL REVEAL
 const revealObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12});
