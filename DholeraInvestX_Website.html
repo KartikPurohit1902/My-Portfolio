@@ -1340,6 +1340,45 @@ img{max-width:100%;height:auto;}
 [data-reveal].visible{opacity:1;transform:none;}
 
 /* ── ARTICLE READER MODAL ── */
+/* LEGAL MODALS */
+#legal-modal{position:fixed;inset:0;z-index:9950;display:none;align-items:flex-start;justify-content:center;background:rgba(4,11,19,0.92);backdrop-filter:blur(12px);overflow-y:auto;padding:2rem 1rem;}
+#legal-modal.open{display:flex;}
+.legal-modal-box{background:var(--cream);border-radius:20px;max-width:820px;width:100%;margin:auto;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.6);animation:modalPop 0.35s var(--ease);}
+.legal-modal-header{background:var(--ink-deep);padding:2rem 2.5rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:2px solid rgba(200,146,42,0.25);}
+.legal-modal-header-left{display:flex;flex-direction:column;gap:0.3rem;}
+.legal-modal-badge{font-family:var(--font-ui);font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--amber);margin-bottom:0.2rem;}
+.legal-modal-title{font-family:var(--font-display);font-size:clamp(1.4rem,4vw,1.9rem);font-weight:700;color:#fff;line-height:1.2;}
+.legal-modal-updated{color:rgba(255,255,255,0.35);font-size:0.76rem;margin-top:0.25rem;}
+.legal-modal-close-btn{background:rgba(255,255,255,0.08);border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);border-radius:10px;width:40px;height:40px;font-size:1.1rem;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s var(--ease);}
+.legal-modal-close-btn:hover{background:rgba(200,146,42,0.2);border-color:var(--amber);color:var(--amber);}
+.legal-modal-toc{background:rgba(200,146,42,0.06);border-bottom:1px solid rgba(200,146,42,0.12);padding:1.25rem 2.5rem;display:flex;flex-wrap:wrap;gap:0.5rem 1.5rem;}
+.legal-modal-toc a{color:var(--amber);font-family:var(--font-ui);font-size:0.73rem;font-weight:600;letter-spacing:0.04em;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;}
+.legal-modal-toc a:hover{opacity:0.7;}
+.legal-modal-body{padding:2.5rem;max-height:70vh;overflow-y:auto;scroll-behavior:smooth;}
+.legal-modal-body::-webkit-scrollbar{width:5px;}
+.legal-modal-body::-webkit-scrollbar-track{background:transparent;}
+.legal-modal-body::-webkit-scrollbar-thumb{background:rgba(200,146,42,0.3);border-radius:3px;}
+.legal-section{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid rgba(0,0,0,0.07);}
+.legal-section:last-child{border-bottom:none;margin-bottom:0;}
+.legal-section h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--ink-deep);margin-bottom:0.85rem;display:flex;align-items:center;gap:0.6rem;}
+.legal-section h3::before{content:'';display:block;width:3px;height:1.1rem;background:var(--amber);border-radius:2px;flex-shrink:0;}
+.legal-section p{color:var(--text-body);font-size:0.9rem;line-height:1.85;margin-bottom:0.85rem;}
+.legal-section p:last-child{margin-bottom:0;}
+.legal-section ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:0.85rem;}
+.legal-section ul li{color:var(--text-body);font-size:0.9rem;line-height:1.75;padding-left:1.25rem;position:relative;}
+.legal-section ul li::before{content:'›';position:absolute;left:0;color:var(--amber);font-weight:700;}
+.legal-highlight{background:rgba(200,146,42,0.07);border-left:3px solid var(--amber);border-radius:0 10px 10px 0;padding:1rem 1.25rem;margin:1rem 0;font-size:0.87rem;color:var(--text-body);line-height:1.75;}
+.legal-highlight strong{color:var(--amber);font-family:var(--font-ui);}
+.legal-modal-footer{background:rgba(8,17,31,0.04);border-top:1px solid rgba(0,0,0,0.07);padding:1.25rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.legal-modal-footer p{color:var(--steel);font-size:0.78rem;}
+.legal-modal-footer a{color:var(--amber);text-decoration:none;font-size:0.78rem;font-weight:600;}
+@media(max-width:600px){
+  .legal-modal-header{padding:1.5rem 1.25rem;}
+  .legal-modal-toc{padding:1rem 1.25rem;}
+  .legal-modal-body{padding:1.5rem 1.25rem;max-height:65vh;}
+  .legal-modal-footer{padding:1rem 1.25rem;flex-direction:column;text-align:center;}
+}
+
 #article-modal{position:fixed;inset:0;z-index:9900;display:none;align-items:flex-start;justify-content:center;background:rgba(4,11,19,0.85);backdrop-filter:blur(8px);overflow-y:auto;padding:2rem 1rem;}
 #article-modal.open{display:flex;}
 .article-modal-box{background:var(--cream);border-radius:20px;max-width:780px;width:100%;margin:auto;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5);animation:modalPop 0.35s var(--ease);}
@@ -2921,9 +2960,9 @@ img{max-width:100%;height:auto;}
     <div class="footer-bottom">
       <p>© 2026 DholeraInvestX. All rights reserved.</p>
       <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Disclaimer</a>
+        <a href="#" onclick="openLegal('privacy');return false;">Privacy Policy</a>
+        <a href="#" onclick="openLegal('terms');return false;">Terms of Service</a>
+        <a href="#" onclick="openLegal('disclaimer');return false;">Disclaimer</a>
         <a href="#">Sitemap</a>
       </div>
     </div>
@@ -2932,6 +2971,37 @@ img{max-width:100%;height:auto;}
     </div>
   </div>
 </footer>
+
+<!-- ======================================================
+     LEGAL MODALS — Privacy Policy / Terms / Disclaimer
+     ====================================================== -->
+<div id="legal-modal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" onclick="if(event.target===this)closeLegal()">
+  <div class="legal-modal-box">
+
+    <!-- HEADER -->
+    <div class="legal-modal-header">
+      <div class="legal-modal-header-left">
+        <span class="legal-modal-badge" id="legal-modal-badge">Legal</span>
+        <h2 class="legal-modal-title" id="legal-modal-title">Privacy Policy</h2>
+        <p class="legal-modal-updated" id="legal-modal-updated">Last updated: January 1, 2026 · Effective: January 1, 2026</p>
+      </div>
+      <button class="legal-modal-close-btn" onclick="closeLegal()" aria-label="Close">✕</button>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="legal-modal-toc" id="legal-modal-toc"></div>
+
+    <!-- BODY -->
+    <div class="legal-modal-body" id="legal-modal-body"></div>
+
+    <!-- FOOTER -->
+    <div class="legal-modal-footer">
+      <p>Questions? Contact us at <a href="mailto:legal@dholerainvestx.com">legal@dholerainvestx.com</a></p>
+      <a href="#" onclick="closeLegal();return false;">Close Document ✕</a>
+    </div>
+
+  </div>
+</div>
 
 <!-- FLOATING ELEMENTS -->
 <a id="wa-float" href="https://wa.me/919033502038?text=Hello%20DholeraInvestX!%20I%20am%20interested%20in%20Dholera%20SIR%20investment." target="_blank" title="Chat on WhatsApp">💬</a>
@@ -4925,8 +4995,436 @@ function closeVTModal(){
   document.body.style.overflow='';
 }
 
-document.getElementById('vt-modal')?.addEventListener('keydown', e=>{ if(e.key==='Escape') closeVTModal(); });
-// ===================== END VIRTUAL TOUR =====================
+// ===================== LEGAL MODALS =====================
+const LEGAL_CONTENT = {
+
+  privacy: {
+    badge: 'Privacy Policy',
+    title: 'Privacy Policy',
+    updated: 'Last updated: January 1, 2026 · Effective: January 1, 2026',
+    toc: ['Introduction','Information We Collect','How We Use Your Information','Cookies & Tracking','Data Sharing','Data Security','Your Rights','Third-Party Links','Children\'s Privacy','Changes to This Policy','Contact Us'],
+    html: `
+      <div class="legal-section" id="ls-1">
+        <h3>1. Introduction</h3>
+        <p>DholeraInvestX ("we", "our", or "us") operates the website <strong>www.dholerainvestx.com</strong> and related digital platforms. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains what information we collect, how we use it, and what rights you have in relation to it.</p>
+        <p>By accessing or using our website, scheduling site visits, submitting enquiry forms, or interacting with our AI assistant ("DIX"), you consent to the collection and use of your information as described in this policy. If you disagree with any part of this policy, please discontinue use of our platform.</p>
+        <div class="legal-highlight"><strong>Governing Law:</strong> This policy is governed by the Information Technology Act, 2000, the Information Technology (Reasonable Security Practices and Procedures and Sensitive Personal Data or Information) Rules, 2011, and applicable rules framed thereunder, in addition to any future regulations under India's Digital Personal Data Protection Act, 2023.</div>
+      </div>
+
+      <div class="legal-section" id="ls-2">
+        <h3>2. Information We Collect</h3>
+        <p><strong>a) Information You Provide Directly:</strong></p>
+        <ul>
+          <li>Full name, mobile number, email address (via enquiry forms, visit booking, or chatbot)</li>
+          <li>Investment budget range, preferred zone/TP scheme, and investment timeline you share during consultations</li>
+          <li>NRI status, country of residence, and FEMA-related details shared during advisory calls</li>
+          <li>Messages, chat history, and documents submitted via the DIX AI assistant or WhatsApp</li>
+        </ul>
+        <p><strong>b) Automatically Collected Technical Data:</strong></p>
+        <ul>
+          <li>IP address, browser type, operating system, device identifiers</li>
+          <li>Pages visited, session duration, scroll depth, and link click patterns</li>
+          <li>Referring URL and UTM campaign parameters</li>
+          <li>Approximate geographic location derived from IP address</li>
+        </ul>
+        <p><strong>c) Information from Third Parties:</strong></p>
+        <ul>
+          <li>Lead data sourced from real estate marketplaces (99acres, MagicBricks, Housing.com) where you have expressed interest in Dholera SIR properties</li>
+          <li>Social media profile data where you interact with our official pages</li>
+          <li>Publicly available Government of Gujarat records used to verify plot details</li>
+        </ul>
+      </div>
+
+      <div class="legal-section" id="ls-3">
+        <h3>3. How We Use Your Information</h3>
+        <p>We use the information we collect for the following legitimate business purposes:</p>
+        <ul>
+          <li>To respond to your property enquiries and connect you with our advisory team</li>
+          <li>To schedule and confirm site visits to Dholera SIR and the Activation Area</li>
+          <li>To send property availability updates, price movement alerts, and investment newsletters (with your consent)</li>
+          <li>To personalise the DIX AI assistant experience based on your stated budget and zone preferences</li>
+          <li>To conduct due diligence and verify investor eligibility under applicable FEMA/RBI guidelines for NRI investors</li>
+          <li>To comply with RERA (Real Estate Regulation and Development Act) reporting obligations and maintain proper records</li>
+          <li>To detect, prevent, and address technical issues, fraud, or misuse of our platform</li>
+          <li>To analyse aggregate usage data and improve our website, chatbot, and advisory services</li>
+        </ul>
+        <div class="legal-highlight"><strong>Marketing Communications:</strong> We will only send promotional content where you have explicitly opted in. You may unsubscribe at any time via the link in any email or by contacting us at legal@dholerainvestx.com.</div>
+      </div>
+
+      <div class="legal-section" id="ls-4">
+        <h3>4. Cookies & Tracking Technologies</h3>
+        <p>We use cookies and similar tracking technologies to enhance your browsing experience. Types of cookies used:</p>
+        <ul>
+          <li><strong>Essential Cookies:</strong> Necessary for website functionality, form submissions, and session management. Cannot be disabled.</li>
+          <li><strong>Analytics Cookies:</strong> Google Analytics / Clarity to understand user behaviour, page performance, and chatbot interaction patterns.</li>
+          <li><strong>Marketing Cookies:</strong> Google Ads and Meta Pixel to measure campaign effectiveness and serve relevant property advertisements.</li>
+          <li><strong>Preference Cookies:</strong> Remember your zone preferences, language settings, and modal states.</li>
+        </ul>
+        <p>You may control cookies through your browser settings. Disabling non-essential cookies may impact certain website features. We do not currently respond to browser "Do Not Track" signals.</p>
+      </div>
+
+      <div class="legal-section" id="ls-5">
+        <h3>5. Data Sharing & Disclosure</h3>
+        <p>We do not sell, rent, or trade your personal information. We may share your data only in the following circumstances:</p>
+        <ul>
+          <li><strong>Service Providers:</strong> Third-party vendors who assist in operating our website (hosting, CRM, email delivery, analytics) under strict data processing agreements</li>
+          <li><strong>Developer / Landowner Partners:</strong> With your explicit consent, your enquiry details may be shared with authorised plot developers or landowners in Dholera SIR to facilitate a transaction</li>
+          <li><strong>Legal Compliance:</strong> Where required by law, court order, or at the request of regulatory authorities including RERA, RBI, or FEMA compliance bodies</li>
+          <li><strong>Business Transfers:</strong> In the event of a merger, acquisition, or sale of assets, your data may be transferred as part of the business, with prior notice to you</li>
+        </ul>
+        <p>All third-party partners are contractually required to maintain the confidentiality and security of your data and are prohibited from using it for independent marketing purposes.</p>
+      </div>
+
+      <div class="legal-section" id="ls-6">
+        <h3>6. Data Security</h3>
+        <p>We implement industry-standard technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction, including:</p>
+        <ul>
+          <li>HTTPS/TLS encryption for all data transmitted to and from our website</li>
+          <li>Access controls and role-based permissions for staff handling personal data</li>
+          <li>Regular security audits and vulnerability assessments of our digital infrastructure</li>
+          <li>Secure storage of documents related to property transactions</li>
+        </ul>
+        <p>However, no method of transmission over the internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your information, we cannot guarantee its absolute security.</p>
+      </div>
+
+      <div class="legal-section" id="ls-7">
+        <h3>7. Your Rights</h3>
+        <p>Subject to applicable law, you have the following rights regarding your personal data:</p>
+        <ul>
+          <li><strong>Right of Access:</strong> Request a copy of the personal information we hold about you</li>
+          <li><strong>Right to Correction:</strong> Request correction of inaccurate or incomplete data</li>
+          <li><strong>Right to Erasure:</strong> Request deletion of your personal data where there is no lawful reason for continued processing</li>
+          <li><strong>Right to Withdraw Consent:</strong> Withdraw consent for marketing communications at any time</li>
+          <li><strong>Right to Grievance Redressal:</strong> Lodge a complaint with our Grievance Officer (details below)</li>
+        </ul>
+        <div class="legal-highlight"><strong>Grievance Officer (as per IT Act Rules):</strong> DholeraInvestX Legal Team · Email: legal@dholerainvestx.com · Phone: +91 90335 02038 · Response time: within 30 days of receipt.</div>
+      </div>
+
+      <div class="legal-section" id="ls-8">
+        <h3>8. Third-Party Links</h3>
+        <p>Our website contains links to external platforms including the Gujarat Government Dholera SIR portal, DMIC Development Corporation, RERA Gujarat, Google Maps embeds, and news publications. These third-party sites have their own privacy policies and we accept no responsibility for their practices. We encourage you to review the privacy policy of any site you visit.</p>
+      </div>
+
+      <div class="legal-section" id="ls-9">
+        <h3>9. Children's Privacy</h3>
+        <p>Our services are directed exclusively to adults (18 years and above) who are eligible to enter into property purchase agreements under Indian law. We do not knowingly collect personal information from persons below the age of 18. If you believe we have inadvertently collected data from a minor, please contact us immediately at legal@dholerainvestx.com and we will delete such information promptly.</p>
+      </div>
+
+      <div class="legal-section" id="ls-10">
+        <h3>10. Changes to This Policy</h3>
+        <p>We reserve the right to update this Privacy Policy at any time. Material changes will be notified via a prominent notice on our website homepage or via email to registered users. Your continued use of our platform after such changes constitutes your acceptance of the revised policy. We recommend reviewing this page periodically.</p>
+      </div>
+
+      <div class="legal-section" id="ls-11">
+        <h3>11. Contact Us</h3>
+        <p>For any questions, concerns, or requests related to this Privacy Policy or your personal data, please reach out to:</p>
+        <ul>
+          <li><strong>Email:</strong> legal@dholerainvestx.com</li>
+          <li><strong>Phone:</strong> +91 90335 02038</li>
+          <li><strong>WhatsApp:</strong> +91 90335 02038</li>
+          <li><strong>Registered Address:</strong> DholeraInvestX Advisory Services, Ahmedabad, Gujarat – 380001, India</li>
+        </ul>
+      </div>
+    `
+  },
+
+  terms: {
+    badge: 'Terms of Service',
+    title: 'Terms of Service',
+    updated: 'Last updated: January 1, 2026 · Effective: January 1, 2026',
+    toc: ['Acceptance of Terms','About DholeraInvestX','Use of Website','Investment Advisory Nature','Property Listings & Accuracy','User Obligations','Intellectual Property','Limitation of Liability','Indemnification','Governing Law','Termination','Amendments','Contact'],
+    html: `
+      <div class="legal-section">
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing, browsing, or using the DholeraInvestX website (<strong>www.dholerainvestx.com</strong>), its sub-pages, the DIX AI assistant, or any related digital service (collectively, "the Platform"), you agree to be bound by these Terms of Service ("Terms"). These Terms form a legally binding agreement between you ("User", "you", or "your") and DholeraInvestX ("Company", "we", "our", or "us").</p>
+        <p>If you do not agree to these Terms, you must immediately cease using the Platform. We recommend reviewing these Terms regularly as they may change.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>2. About DholeraInvestX</h3>
+        <p>DholeraInvestX is a real estate investment advisory firm specialising exclusively in the Dholera Special Investment Region (SIR), Gujarat, India. We assist prospective investors in understanding the Dholera SIR opportunity, identifying suitable plots, conducting preliminary due diligence, and connecting them with registered developers, landowners, and legal professionals.</p>
+        <div class="legal-highlight"><strong>Important Clarification:</strong> DholeraInvestX is an advisory intermediary and not a developer, builder, government body, or the Dholera Industrial City Development Limited (DICDL). We are not affiliated with the Government of Gujarat or any government agency unless explicitly stated.</div>
+        <p>We are required to operate in compliance with the Real Estate (Regulation and Development) Act, 2016 (RERA) and applicable Gujarat state regulations for real estate intermediaries.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>3. Use of the Platform</h3>
+        <p>You agree to use the Platform only for lawful purposes and in accordance with these Terms. Permitted uses include:</p>
+        <ul>
+          <li>Browsing property and investment information about Dholera SIR</li>
+          <li>Submitting genuine enquiries for plots, site visits, or investment consultations</li>
+          <li>Interacting with the DIX AI assistant for investment research purposes</li>
+          <li>Accessing educational content, blog articles, and market data published by DholeraInvestX</li>
+        </ul>
+        <p>You agree <strong>not</strong> to:</p>
+        <ul>
+          <li>Use the Platform to harass, defraud, mislead, or harm any person or entity</li>
+          <li>Scrape, copy, reverse-engineer, or reproduce Platform content for commercial use without written permission</li>
+          <li>Submit false, misleading, or fraudulent information in any form or enquiry</li>
+          <li>Use automated bots, crawlers, or scripts to access the Platform without prior consent</li>
+          <li>Attempt to gain unauthorised access to any part of the Platform's infrastructure</li>
+          <li>Transmit any malicious code, virus, or harmful content through the Platform</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h3>4. Nature of Investment Advisory Services</h3>
+        <p>All information, projections, ROI estimates, zone analyses, price forecasts, and market commentary provided on this Platform are for <strong>general informational and educational purposes only</strong>. They do not constitute:</p>
+        <ul>
+          <li>A formal financial advice, portfolio management service, or SEBI-regulated investment advice</li>
+          <li>A legal opinion or due diligence report on any specific property, plot, or developer</li>
+          <li>A guarantee, assurance, or representation of future returns, price appreciation, or development timelines</li>
+          <li>An offer to sell or solicitation to purchase any specific property</li>
+        </ul>
+        <p>Real estate investments are subject to market risks, regulatory changes, infrastructure delays, and economic conditions. <strong>You are strongly advised to engage an independent RERA-registered agent, a qualified legal advisor, and a certified financial planner before committing any funds to a property investment in Dholera SIR.</strong></p>
+        <div class="legal-highlight"><strong>NRI Investors:</strong> Non-Resident Indians and Persons of Indian Origin must additionally comply with FEMA (Foreign Exchange Management Act) regulations, RBI guidelines on immovable property acquisition, and applicable tax obligations both in India and their country of residence. DholeraInvestX does not provide FEMA/tax legal advice and recommends consulting a qualified CA and NRI legal specialist.</div>
+      </div>
+
+      <div class="legal-section">
+        <h3>5. Property Listings & Information Accuracy</h3>
+        <p>Plot availability, pricing, zone classifications, TP scheme details, developer information, and project timelines displayed on this Platform are based on publicly available Government of Gujarat records, DICDL notifications, and our best research as of the date of publication. However:</p>
+        <ul>
+          <li>Land prices and availability change frequently and without notice</li>
+          <li>TP scheme finalisation, land use designations, and zone boundaries are subject to government revision</li>
+          <li>Infrastructure timelines (metro, expressway, airport, utilities) are government-controlled and may differ from projections</li>
+          <li>Plot documents, title chains, and encumbrance status must be independently verified by a qualified property lawyer before purchase</li>
+        </ul>
+        <p>DholeraInvestX makes no warranty, express or implied, regarding the completeness, accuracy, or fitness for purpose of any property information on this Platform. All information is provided "as is" and "as available".</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>6. User Obligations</h3>
+        <p>By using this Platform, you represent and warrant that:</p>
+        <ul>
+          <li>You are at least 18 years of age and legally competent to enter into binding contracts under Indian law</li>
+          <li>All information you provide to us is truthful, accurate, and complete</li>
+          <li>You will not use information obtained from this Platform to engage in speculative, fraudulent, or illegal real estate transactions</li>
+          <li>You understand that property investment involves financial risk and you accept full responsibility for your investment decisions</li>
+          <li>NRI/PIO users confirm they are acquiring property in compliance with FEMA and RBI regulations</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h3>7. Intellectual Property</h3>
+        <p>All content on this Platform — including text, graphics, logos, icons, images, data compilations, zone analyses, chatbot dialogue, software, and the overall design — is the intellectual property of DholeraInvestX or its licensed content providers and is protected under Indian and international copyright, trademark, and intellectual property laws.</p>
+        <p>You may view, download, and print content for your personal, non-commercial use only. Any reproduction, distribution, republication, or commercial use of Platform content without our prior written consent is strictly prohibited. Unauthorised use may result in legal action.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>8. Limitation of Liability</h3>
+        <p>To the fullest extent permitted by applicable law, DholeraInvestX, its directors, officers, employees, agents, and partners shall not be liable for:</p>
+        <ul>
+          <li>Any financial loss, including capital loss, loss of anticipated profit, or loss of investment opportunity arising from reliance on information published on this Platform</li>
+          <li>Delays, cancellations, or changes in government-announced infrastructure projects (metro, expressway, airport, SEZ)</li>
+          <li>Disputes arising from property transactions facilitated through our advisory services, including title defects, encumbrances, or developer defaults</li>
+          <li>Interruption, errors, or unavailability of the Platform or the DIX AI assistant</li>
+          <li>Any third-party acts or omissions, including developer failures, legal issues, or regulatory orders</li>
+        </ul>
+        <p>In any event, our total aggregate liability to you for any and all claims shall not exceed the amount of advisory fees, if any, paid by you to DholeraInvestX in the six months preceding the relevant claim.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>9. Indemnification</h3>
+        <p>You agree to indemnify, defend, and hold harmless DholeraInvestX and its directors, officers, employees, and representatives from and against any claims, liabilities, damages, losses, costs, and expenses (including reasonable legal fees) arising out of or related to: (a) your use or misuse of the Platform; (b) your violation of these Terms; (c) your violation of any third-party rights; or (d) any fraudulent, misleading, or unlawful conduct on your part.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>10. Governing Law & Dispute Resolution</h3>
+        <p>These Terms shall be governed by and construed in accordance with the laws of India, without regard to conflict of law principles. Any disputes arising from or relating to these Terms or the Platform shall be subject to the exclusive jurisdiction of courts located in Ahmedabad, Gujarat, India.</p>
+        <p>Prior to initiating legal proceedings, both parties agree to attempt in good faith to resolve any dispute through mutual negotiation. If unresolved within 30 days, disputes may be referred to arbitration under the Arbitration and Conciliation Act, 1996, with a sole arbitrator appointed by mutual consent.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>11. Termination</h3>
+        <p>We reserve the right to suspend or terminate your access to the Platform at our sole discretion, without notice, for any reason including breach of these Terms, fraudulent activity, or misuse of advisory services. Upon termination, all licences granted to you under these Terms shall immediately cease.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>12. Amendments</h3>
+        <p>DholeraInvestX reserves the right to modify these Terms at any time. Revised Terms will be effective immediately upon posting to the Platform. Your continued use of the Platform following the posting of changes constitutes your acceptance of the amended Terms. We encourage you to review these Terms periodically.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>13. Contact</h3>
+        <p>For questions or concerns about these Terms of Service, please contact:</p>
+        <ul>
+          <li><strong>Email:</strong> legal@dholerainvestx.com</li>
+          <li><strong>Phone:</strong> +91 90335 02038</li>
+          <li><strong>Address:</strong> DholeraInvestX Advisory Services, Ahmedabad, Gujarat – 380001, India</li>
+        </ul>
+      </div>
+    `
+  },
+
+  disclaimer: {
+    badge: 'Legal Disclaimer',
+    title: 'Investment Disclaimer',
+    updated: 'Last updated: January 1, 2026 · Effective: January 1, 2026',
+    toc: ['General Disclaimer','Investment Risk Warning','No Guarantee of Returns','Government Project Timelines','Information Accuracy','RERA Compliance','NRI / FEMA Notice','AI Assistant Disclaimer','No Developer Affiliation','Due Diligence Advisory'],
+    html: `
+      <div class="legal-section">
+        <h3>1. General Disclaimer</h3>
+        <p>The content published on this website, including all text, data, graphics, zone analyses, price projections, testimonials, chatbot interactions, and any other materials (collectively, "Content"), is provided by DholeraInvestX for <strong>general informational and educational purposes only</strong>.</p>
+        <p>Nothing on this Platform constitutes, or should be construed as, professional financial advice, legal advice, tax advice, RERA-regulated brokerage, SEBI-regulated portfolio management, or any other regulated professional service. You should not act upon any information on this Platform without seeking independent professional advice suited to your specific circumstances.</p>
+        <div class="legal-highlight"><strong>Read this carefully:</strong> Real estate investment decisions involve significant financial risk. Market conditions, government policies, infrastructure timelines, and land values can change materially and unpredictably. DholeraInvestX shall not be held responsible for any loss, damage, or adverse outcome resulting from reliance on any Content on this Platform.</div>
+      </div>
+
+      <div class="legal-section">
+        <h3>2. Investment Risk Warning</h3>
+        <p>Investing in real estate, including land plots in Dholera SIR, carries inherent risks that prospective investors must carefully consider:</p>
+        <ul>
+          <li><strong>Capital Risk:</strong> The value of land can decrease as well as increase. You may not recover the full amount invested.</li>
+          <li><strong>Liquidity Risk:</strong> Real estate is an illiquid asset class. There is no guaranteed market for resale at any given time or price.</li>
+          <li><strong>Regulatory Risk:</strong> Government policies, TP scheme classifications, land use designations, building bylaws, and RERA regulations may change without prior notice.</li>
+          <li><strong>Infrastructure Delay Risk:</strong> Development timelines for the metro, expressway, international airport, semiconductor SEZ, and utilities are determined by government agencies and may be delayed or revised.</li>
+          <li><strong>Title & Legal Risk:</strong> Land title disputes, encumbrances, litigations, and boundary discrepancies are possible in any real estate transaction. Independent legal due diligence is mandatory.</li>
+          <li><strong>Developer Risk:</strong> Third-party developers or landowners whose plots are discussed or referenced on this Platform may be subject to financial difficulties, legal disputes, or regulatory action.</li>
+          <li><strong>Force Majeure:</strong> Natural disasters, pandemics, geopolitical events, or other force majeure circumstances beyond any party's control may adversely impact property values and development.</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h3>3. No Guarantee of Returns</h3>
+        <p>All ROI projections, price appreciation estimates, rental yield calculations, and return forecasts published on this Platform — including those in our blog articles, chatbot responses, virtual tour panels, and marketing materials — are <strong>illustrative estimates only</strong>. They are based on:</p>
+        <ul>
+          <li>Historical land price data from publicly available sources and market surveys</li>
+          <li>Announced government infrastructure investments and development milestones</li>
+          <li>Comparable appreciation trends in similar greenfield smart city projects in India</li>
+        </ul>
+        <p><strong>Past performance of land prices in any region, including Dholera SIR, is not a reliable indicator of future performance.</strong> Actual returns may be materially lower than projected, or may result in a loss. DholeraInvestX makes no representation or warranty, express or implied, regarding the achievement of any projected return figure.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>4. Government Project Timelines</h3>
+        <p>References to government-announced infrastructure projects on this Platform — including but not limited to the Dholera International Airport, the Ahmedabad-Dholera Expressway, the Dholera Metro Rail, the Tata-PSMC Semiconductor SEZ, the 1,200 MW Solar Park, and DMIC Corridor Phase developments — are based on publicly available government press releases, budget announcements, and official notifications as of the date of publication.</p>
+        <p>DholeraInvestX has no control over, and accepts no responsibility for, delays, modifications, cancellations, or changes to any government project. Completion dates and operational milestones are subject to change at the discretion of the relevant government agencies, including DICDL, NHAI, DMICDC, GIDB, Airport Authority of India, and the Gujarat State Government.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>5. Accuracy of Information</h3>
+        <p>While we endeavour to ensure that all Content published on this Platform is accurate, up-to-date, and sourced from credible government and market sources, DholeraInvestX makes no representations or warranties of any kind — express or implied — about:</p>
+        <ul>
+          <li>The completeness, accuracy, or reliability of any information on the Platform</li>
+          <li>The current availability of any specific plot, zone, or land parcel</li>
+          <li>The accuracy of land prices, which fluctuate based on market conditions, negotiation, and plot-specific attributes</li>
+          <li>The classification of land under specific TP schemes, which are subject to finalisation by the Gujarat Government</li>
+        </ul>
+        <p>Information on this Platform may contain errors, omissions, or outdated data. You should independently verify all information with the relevant government authority (e.g., DICDL, DUDA, RERA Gujarat) and a qualified legal professional before taking any investment action.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>6. RERA Compliance Notice</h3>
+        <p>Under the Real Estate (Regulation and Development) Act, 2016 (RERA), all real estate transactions involving specified properties must be conducted through RERA-registered projects and agents. DholeraInvestX advises all investors to:</p>
+        <ul>
+          <li>Verify the RERA registration status of any project or developer before making payment</li>
+          <li>Check the project's registered details on the RERA Gujarat portal at <strong>gujrera.gujarat.gov.in</strong></li>
+          <li>Ensure that any sale agreement is compliant with RERA and includes all mandatory disclosures</li>
+          <li>Retain copies of all transaction documents, receipts, and agreements</li>
+        </ul>
+        <div class="legal-highlight"><strong>Note:</strong> Certain rural/agricultural land or plots within TP schemes at early development stages may not be subject to RERA registration requirements. This distinction must be clarified with a property lawyer prior to any transaction.</div>
+      </div>
+
+      <div class="legal-section">
+        <h3>7. NRI / FEMA / RBI Notice</h3>
+        <p>Non-Resident Indians (NRIs), Persons of Indian Origin (PIOs), and Overseas Citizens of India (OCIs) considering investment in Dholera SIR real estate must be aware that such transactions are governed by:</p>
+        <ul>
+          <li>The Foreign Exchange Management Act, 1999 (FEMA) and FEMA (Acquisition and Transfer of Immovable Property in India) Regulations</li>
+          <li>Reserve Bank of India (RBI) guidelines on acquisition of immovable property by NRIs/PIOs</li>
+          <li>Income Tax Act, 1961 regarding repatriation of sale proceeds, TDS obligations, and capital gains treatment</li>
+          <li>Applicable tax laws in the NRI's country of residence regarding foreign real estate holdings</li>
+        </ul>
+        <p><strong>DholeraInvestX does not provide FEMA, RBI, or cross-border tax advice.</strong> NRI investors must independently consult a qualified Chartered Accountant and NRI legal specialist before proceeding with any property purchase.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>8. AI Assistant (DIX) Disclaimer</h3>
+        <p>The DIX AI assistant embedded on this Platform is provided as a conversational investment research tool. Users should be aware that:</p>
+        <ul>
+          <li>DIX responses are generated based on programmed knowledge about Dholera SIR and should not be treated as personalised financial or legal advice</li>
+          <li>ROI figures, price ranges, and zone details shared by DIX are indicative estimates and may not reflect current market conditions</li>
+          <li>DIX may occasionally provide incomplete, outdated, or imprecise information — always cross-verify critical details with our human advisory team</li>
+          <li>Conversations with DIX are logged and may be reviewed by our team to improve the service</li>
+        </ul>
+      </div>
+
+      <div class="legal-section">
+        <h3>9. No Developer Affiliation</h3>
+        <p>DholeraInvestX is an independent real estate advisory firm. We are not:</p>
+        <ul>
+          <li>The Government of Gujarat or any of its agencies, including DICDL, GIDB, or GMADA</li>
+          <li>Dholera Industrial City Development Limited (DICDL) or any other government-owned developer</li>
+          <li>An affiliate, subsidiary, or representative of Tata Electronics, PSMC, or any other company investing in Dholera SIR</li>
+          <li>A licensed builder, developer, or RERA-registered promoter of any specific residential or commercial project</li>
+        </ul>
+        <p>Our role is limited to advisory services: helping investors understand the Dholera SIR opportunity, identify plots through our network, and connect with authorised sellers. All final property transactions are between the buyer and the seller/developer directly.</p>
+      </div>
+
+      <div class="legal-section">
+        <h3>10. Due Diligence Advisory</h3>
+        <p>Before investing in any plot or property in Dholera SIR — through DholeraInvestX or any other channel — we strongly recommend that you:</p>
+        <ul>
+          <li>Obtain a clear title report from a property lawyer licensed in Gujarat</li>
+          <li>Verify land encumbrance status at the sub-registrar office</li>
+          <li>Confirm TP scheme classification and permissible land use with DUDA/DICDL</li>
+          <li>Inspect the plot in person or through a trusted representative</li>
+          <li>Review the sale agreement with your legal advisor before signing</li>
+          <li>Verify the developer/seller's credentials, track record, and RERA registration</li>
+          <li>Ensure payment is made only via banking channels (NEFT/RTGS/cheque) — never in cash</li>
+          <li>Retain original documents, receipts, and a certified copy of the registered sale deed</li>
+        </ul>
+        <div class="legal-highlight"><strong>DholeraInvestX's Commitment:</strong> We are committed to transparent, ethical, and investor-first advisory services. If you have any concerns about any information on this Platform, please contact us at legal@dholerainvestx.com before taking any investment action.</div>
+      </div>
+    `
+  }
+
+};
+
+function openLegal(type) {
+  const content = LEGAL_CONTENT[type];
+  if (!content) return;
+
+  document.getElementById('legal-modal-badge').textContent = content.badge;
+  document.getElementById('legal-modal-title').textContent = content.title;
+  document.getElementById('legal-modal-updated').textContent = content.updated;
+
+  // Build TOC
+  const tocEl = document.getElementById('legal-modal-toc');
+  tocEl.innerHTML = content.toc.map((t, i) =>
+    `<a href="#ls-${type}-${i+1}" onclick="document.getElementById('legal-modal-body').querySelector('#ls-${type}-${i+1}')?.scrollIntoView({behavior:'smooth',block:'start'});return false;">${i+1}. ${t}</a>`
+  ).join('');
+
+  // Build body — add unique IDs to sections
+  let bodyHTML = content.html;
+  let sectionIdx = 0;
+  bodyHTML = bodyHTML.replace(/<div class="legal-section">/g, () => {
+    sectionIdx++;
+    return `<div class="legal-section" id="ls-${type}-${sectionIdx}">`;
+  });
+  // handle existing id attributes
+  bodyHTML = bodyHTML.replace(/<div class="legal-section" id="ls-\d+">/g, (match, offset) => {
+    const num = match.match(/id="ls-(\d+)"/)[1];
+    return `<div class="legal-section" id="ls-${type}-${num}">`;
+  });
+
+  document.getElementById('legal-modal-body').innerHTML = bodyHTML;
+  document.getElementById('legal-modal-body').scrollTop = 0;
+
+  const modal = document.getElementById('legal-modal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLegal() {
+  document.getElementById('legal-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('legal-modal')?.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLegal();
+});
+// ===================== END LEGAL MODALS =====================
+
+
 
 </script>
 </body>
